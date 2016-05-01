@@ -4,6 +4,10 @@ function [ ] = TREINAR_REDE_NEURAL( )
     addpath .\Functions
     addpath .\Databases
     
+    clc 
+    clearvars
+    close all
+    
     load BancoDeDados
     
     erroDoTreinamento = 1;
