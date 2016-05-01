@@ -15,7 +15,13 @@ function [ imagem ] = tirarFotoComWebcam(numeroDaWebcam)
                 'Callback', @(src, evnt)acaoBotaoSair(),...
                 'KeyPressFcn', @(src, evnt)acaoBotaoSair);
         
-    cam=webcam(numeroDaWebcam);
+    switch numeroDaWebcam
+        case 1
+            cam=webcam('Integrated Webcam');
+        case 2
+            cam=webcam('USB2.0 Camera');
+    end
+    
 
     cam.Resolution = '640x480';
     
