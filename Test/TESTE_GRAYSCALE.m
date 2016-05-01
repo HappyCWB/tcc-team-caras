@@ -19,12 +19,14 @@ function TESTE_GRAYSCALE (MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_
             USAR_WEBCAM_INTEGRADA = 0;
     end
 
-    imgGray = detectarRostoPorSegmentacao...
+    [imgRGB,~] = detectarRostoPorSegmentacao...
         (MOSTRAR_RESULTADOS_INTERMEDIARIOS,...
         MOSTRAR_RESULTADOS_FINAIS,...
         USAR_WEBCAM_INTEGRADA);
 
     figure
+    
+    imgGray = rgb2gray(imgRGB);
     imshow(imgGray)
 
 end
