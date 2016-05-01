@@ -21,8 +21,8 @@ function [ ] = TREINAR_REDE_NEURAL( )
         numeroDeTreinamentos = numeroDeTreinamentos + 1;
     end
     
-    erroDoTreinamento
-    numeroDeTreinamentos
+    %erroDoTreinamento
+    %numeroDeTreinamentos
     save ./Databases/BDRedeNeural net;
 
 end
