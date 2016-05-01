@@ -2,6 +2,7 @@
 function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
 
     addpath ./Functions
+    addpath ./Classes
     addpath ./Databases
 
     switch nargin

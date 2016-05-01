@@ -1,8 +1,9 @@
 
 function [ ] = TREINAR_REDE_NEURAL( )
 
-    addpath .\Functions
-    addpath .\Databases
+    addpath ./Functions
+    addpath ./Classes
+    addpath ./Databases
     
     clc 
     clearvars
