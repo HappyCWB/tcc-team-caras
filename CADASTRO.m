@@ -28,7 +28,7 @@ function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_F
     
     tamanhoAtual = 0;
     arrayDasFotos = cell(1);
-    entradaRedeNeural = zeros(1,14400);
+    entradaRedeNeural = zeros(1,4800);
     saidaRedeNeural = zeros(1,4);
     
     fazerSetupDoCadastro();
@@ -43,10 +43,10 @@ function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_F
             
             sairDoPrograma = 1;
             
-%         elseif imagemEstaVazia(imagemCortada) == 1
-%             
-%             disp('Nenhum rosto encontrado!');
-%             disp(' ');
+        elseif imagemEstaVazia(imagemCortada) == 1
+            
+            disp('Nenhum rosto encontrado!');
+            disp(' ');
             
         else
         
@@ -139,7 +139,11 @@ function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_F
     function guardarNosVetores(imagemCortada, idMaisRecente)
         
         arrayDasFotos{tamanhoAtual} = imagemCortada;
-        entradaRedeNeural(tamanhoAtual,:) = reshape(arrayDasFotos{tamanhoAtual},14400,1);
+        
+        imagemCortadaGrayscale = rgb2gray(imagemCortada);
+        entradaRedeNeural(tamanhoAtual,:) = ...
+            reshape(imagemCortadaGrayscale,4800,1);
+        
         saidaRedeNeural(tamanhoAtual,idMaisRecente) = 1;
         
     end
@@ -147,7 +151,7 @@ function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_F
     function apresentarResultadosParciais()
        
         disp('1 = Lucas ; 2 = Luis ; 3 = Matheus ; 4 = Ambiente : ');
-        vetorDosNumerosDeFotos
+        disp(vetorDosNumerosDeFotos);
         
     end
 
