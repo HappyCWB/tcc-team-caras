@@ -1,5 +1,7 @@
 
-function [ imagemCortadaEm80por60GrayScale, temRostoNaImagem ] = detectarRostoPorSegmentacao(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
+function [ imagemCortadaEm80por60RGB, temRostoNaImagem ]...
+    = detectarRostoPorSegmentacao...
+    (MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
 
     switch nargin
         case 0
@@ -21,7 +23,7 @@ function [ imagemCortadaEm80por60GrayScale, temRostoNaImagem ] = detectarRostoPo
 
     if max(imagemInicialDaCamera) == 0
         
-        imagemCortadaEm80por60GrayScale = -1;
+        imagemCortadaEm80por60RGB = -1;
         
     else
     
@@ -57,23 +59,17 @@ function [ imagemCortadaEm80por60GrayScale, temRostoNaImagem ] = detectarRostoPo
 
                 imagemCortada = imcrop(imagemInicialDaCamera, BoundingBox);
 
-                imagemCortadaEm80por60 = imresize(imagemCortada, [80 60]);
-    
-                imagemCortadaEm80por60GrayScale = rgb2gray(imagemCortadaEm80por60);
+                imagemCortadaEm80por60RGB = imresize(imagemCortada, [80 60]);
             
             else
                 
-                imagemCortadaEm80por60 = imresize(imagemInicialDaCamera, [80 60]);
-                imagemCortadaEm80por60GrayScale = rgb2gray(imagemCortadaEm80por60);
-                
+                imagemCortadaEm80por60RGB = imresize(imagemInicialDaCamera, [80 60]);
             end
                 
         else
             
             temRostoNaImagem = 0;
-            imagemCortadaEm80por60 = imresize(imagemInicialDaCamera, [80 60]);
-            imagemCortadaEm80por60GrayScale = rgb2gray(imagemCortadaEm80por60);
-
+            imagemCortadaEm80por60RGB = imresize(imagemInicialDaCamera, [80 60]);
         end
   
         
