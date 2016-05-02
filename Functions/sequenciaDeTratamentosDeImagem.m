@@ -3,16 +3,16 @@ function [ imagemPosTratamentos ] = sequenciaDeTratamentosDeImagem( imagemPreTra
     imagemPosPreenchimento0 = preencherBuracosDaImagem(imagemPreTratamentos);
 
     [imagemPosPreenchimento1, imagemPosErosao1, imagemPosDilatacao1] = ...
-           removerRuidosComQuadradoVariavel(imagemPosPreenchimento0, 5);
+           removerRuidosComQuadradoVariavel(imagemPosPreenchimento0, 7);
 
     [imagemPosPreenchimento2, imagemPosErosao2, imagemPosDilatacao2] = ...
-           removerRuidosComQuadradoVariavel(imagemPosPreenchimento1, 7);
+           removerRuidosComQuadradoVariavel(imagemPosPreenchimento1, 9);
     
     [imagemPosPreenchimento3, imagemPosErosao3, imagemPosDilatacao3] = ...
-           removerRuidosComQuadradoVariavel(imagemPosPreenchimento2, 9);
+           removerRuidosComQuadradoVariavel(imagemPosPreenchimento2, 11);
 
     [imagemPosTratamentos, imagemPosErosao4, imagemPosDilatacao4] = ...
-           removerRuidosComQuadradoVariavel(imagemPosPreenchimento3, 11);
+           removerRuidosComQuadradoVariavel(imagemPosPreenchimento3, 13);
     
     if(mostrarResultadosIntermediarios==1)
 
