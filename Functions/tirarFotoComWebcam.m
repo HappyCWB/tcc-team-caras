@@ -15,11 +15,34 @@ function [ imagem ] = tirarFotoComWebcam(numeroDaWebcam)
                 'Callback', @(src, evnt)acaoBotaoSair(),...
                 'KeyPressFcn', @(src, evnt)acaoBotaoSair);
         
+    listaDasWebcams = webcamlist;
+    [~, tamanhoDaLista] = size(listaDasWebcams);
+    ok = 0;
+    
     switch numeroDaWebcam
         case 1
-            cam=webcam('Integrated Webcam');
+            for i=1:tamanhoDaLista
+                if strcmp(listaDasWebcams(i),'Integrated Webcam')
+                    cam=webcam('Integrated Webcam');
+                    ok = 1;
+                end
+            end
+            
+            if ~ok
+                cam = webcam(1);
+            end
+            
         case 2
-            cam=webcam('USB2.0 Camera');
+            for i=1:tamanhoDaLista
+                if strcmp(listaDasWebcams(i),'USB2.0 Camera')
+                    cam=webcam('USB2.0 Camera');
+                    ok = 1;
+                end
+            end
+            
+            if ~ok
+                cam = webcam(1);
+            end
     end
     
 
