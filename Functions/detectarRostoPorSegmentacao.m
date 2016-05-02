@@ -23,6 +23,7 @@ function [ imagemCortadaEm80por60RGB, temRostoNaImagem ]...
 
     if max(imagemInicialDaCamera) == 0
         
+        temRostoNaImagem = 0;
         imagemCortadaEm80por60RGB = -1;
         
     else
@@ -63,7 +64,9 @@ function [ imagemCortadaEm80por60RGB, temRostoNaImagem ]...
             
             else
                 
+                temRostoNaImagem = 0;
                 imagemCortadaEm80por60RGB = imresize(imagemInicialDaCamera, [80 60]);
+                
             end
                 
         else
