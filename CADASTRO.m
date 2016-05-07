@@ -194,12 +194,10 @@ function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_F
         
         if tamanhoAtual > 0
             disp('Treinando Rede Neural...');
-            disp(' ');
             TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS);
-            disp('Rede Neural treinada com sucesso.')
-            disp(' ');
         end
         
+        disp(' ');
         disp('Até breve!');
     end
 

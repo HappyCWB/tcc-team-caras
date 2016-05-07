@@ -32,8 +32,6 @@ function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
         imprimirLuminancias(luminanciaS, luminanciaNE, luminanciaNW);
     end
     
-    disp('Até breve!');
-    
     function ajustarParametrosOpcionais(nargin)
         
         switch nargin

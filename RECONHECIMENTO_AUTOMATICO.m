@@ -41,12 +41,12 @@ function [  ] = RECONHECIMENTO_AUTOMATICO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOS
                 MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS);
     end
     
+    disp('Até breve!');
+    
     function acaoBotaoSair()
         
         sair = 1;
         delete(handleDaTela);
-        
-        disp('Até breve!');
     end
 
     function ajustarParametrosOpcionais(nargin)

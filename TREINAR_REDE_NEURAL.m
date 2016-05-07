@@ -10,7 +10,7 @@ function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
     clearvars -except MOSTRAR_RESULTADOS_FINAIS
     close all
     
-    load ./Databases/BancoDeDados
+    load ./Databases/BancoDeDados entradaRedeNeural saidaRedeNeural
     
     erroDoTreinamento = 1;
     numeroDeTreinamentos = 0;
@@ -37,7 +37,8 @@ function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
     
     save ./Databases/BDRedeNeural net;
     
-    disp('Até breve!');
+    disp(' ');
+    disp('Rede Neural treinada com sucesso!');
     
     function ajustarParametrosOpcionais(nargin)
        
