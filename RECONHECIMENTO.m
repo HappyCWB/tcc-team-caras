@@ -5,27 +5,50 @@ function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
     addpath ./Classes
     addpath ./Databases
 
-    switch nargin
-        case 0
-            MOSTRAR_RESULTADOS_INTERMEDIARIOS = 0;
-            MOSTRAR_RESULTADOS_FINAIS = 0;
-            USAR_WEBCAM_INTEGRADA = 0;
-        case 1
-            MOSTRAR_RESULTADOS_FINAIS = 1;
-            USAR_WEBCAM_INTEGRADA = 0;
-        case 2
-            USAR_WEBCAM_INTEGRADA = 0;
-    end
+    ajustarParametrosOpcionais(nargin);
     
     clc
     clearvars -except MOSTRAR_RESULTADOS_INTERMEDIARIOS MOSTRAR_RESULTADOS_FINAIS USAR_WEBCAM_INTEGRADA
     close all
     
-    [imagemCortada, temRostoNaImagem] = detectarRostoPorSegmentacao(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA);
-
+    [imagemInicialDaCamera] = tirarFotoComWebcam(USAR_WEBCAM_INTEGRADA);
+       
+    [imagemCortada, temRostoNaImagem] = detectarRostoPorSegmentacao...
+            (imagemInicialDaCamera, ...
+            MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS);
+    
     imagemCortadaGray = rgb2gray(imagemCortada);
     
-    reconhecerQuemEstaNaImagem(imagemCortadaGray, temRostoNaImagem);
+    [taxaDeCerteza, idDaPessoa] = ...
+        reconhecerQuemEstaNaImagem(imagemCortadaGray);
+    
+    imprimirResultadosDoReconhecimento(taxaDeCerteza, idDaPessoa, temRostoNaImagem);
+    
+    if temRostoNaImagem
+    
+        [luminanciaS, luminanciaNE, luminanciaNW] = ...
+            detectarLuminanciaDasTresDivisoesDoRosto(imagemCortada, MOSTRAR_RESULTADOS_FINAIS);
+
+        imprimirLuminancias(luminanciaS, luminanciaNE, luminanciaNW);
+    end
+    
+    disp('Até breve!');
+    
+    function ajustarParametrosOpcionais(nargin)
+        
+        switch nargin
+            case 0
+                MOSTRAR_RESULTADOS_INTERMEDIARIOS = 0;
+                MOSTRAR_RESULTADOS_FINAIS = 0;
+                USAR_WEBCAM_INTEGRADA = 0;
+            case 1
+                MOSTRAR_RESULTADOS_FINAIS = 1;
+                USAR_WEBCAM_INTEGRADA = 0;
+            case 2
+                USAR_WEBCAM_INTEGRADA = 0;
+        end
+        
+    end
     
 end
 
