@@ -1,12 +1,7 @@
 
 function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
 
-    switch nargin
-    
-        case 0
-            MOSTRAR_RESULTADOS_FINAIS = 0;
-        
-    end
+    ajustarParametrosOpcionais(nargin)
     
     addpath ./Functions
     addpath ./Classes
@@ -41,6 +36,17 @@ function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
     end
     
     save ./Databases/BDRedeNeural net;
+    
+    disp('Até breve!');
+    
+    function ajustarParametrosOpcionais(nargin)
+       
+        switch nargin
+    
+            case 0
+                MOSTRAR_RESULTADOS_FINAIS = 0;
+        end
+    end
 
 end
 
