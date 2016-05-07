@@ -7,7 +7,7 @@ function [idDaPessoa] = escolherPessoaDaFoto()
     addpath ../Databases
     
     idDaPessoa = 0;
-    
+   
     load BancoDeDados cadastro
 
     telaEscolhaDaPessoa = figure('Name', 'TCC Eng. Controle e Automação'); 
@@ -179,12 +179,6 @@ function [idDaPessoa] = escolherPessoaDaFoto()
         if botaoApertado > cadastro.tamanhoDoVetorDosNomes
            
             cadastro.adicionarNome(nomeEscritoNaEdit(botaoApertado));
-            
-            if botaoApertado == 1
-                primeiroNome = nomeEscritoNaEdit(1);
-                save BancoDeDados primeiroNome;
-            end
-            
         end
         
         save BancoDeDados cadastro
