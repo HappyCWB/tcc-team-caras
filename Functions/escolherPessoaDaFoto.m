@@ -3,8 +3,6 @@ function [idDaPessoa] = escolherPessoaDaFoto()
 %   Detailed explanation goes here
 
     addpath ../Functions
-    addpath ../Classes
-    addpath ../Databases
     
     idDaPessoa = 0;
    
