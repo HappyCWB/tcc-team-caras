@@ -89,7 +89,8 @@ function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_F
             
     end
     
-    disp('Até breve!');
+    %%%% Saída do programa %%%%
+    rotinaDeSaidaDoCadastro;
     
     function acaoBotaoSim(~,~,imagemCortada)
 
@@ -195,6 +196,15 @@ function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_F
             saidaRedeNeural tamanhoAtual arrayDasFotos ...
             cadastro;
         
+    end
+
+    function rotinaDeSaidaDoCadastro
+        disp('Treinando Rede Neural...');
+        disp(' ');
+        TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS);
+        disp('Rede Neural treinada com sucesso.')
+        disp(' ');
+        disp('Até breve!');
     end
 
 end
