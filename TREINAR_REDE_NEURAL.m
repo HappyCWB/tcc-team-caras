@@ -9,7 +9,7 @@ function [ ] = TREINAR_REDE_NEURAL( )
     clearvars
     close all
     
-    load BancoDeDados
+    load ./Databases/BancoDeDados
     
     erroDoTreinamento = 1;
     numeroDeTreinamentos = 0;
