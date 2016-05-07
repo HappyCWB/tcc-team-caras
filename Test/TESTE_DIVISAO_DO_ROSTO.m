@@ -21,15 +21,16 @@ function TESTE_DIVISAO_DO_ROSTO (MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESU
             USAR_WEBCAM_INTEGRADA = 0;
     end
 
-    [imgRGB,temRostoNaImagem] = detectarRostoPorSegmentacao...
-        (MOSTRAR_RESULTADOS_INTERMEDIARIOS,...
-        MOSTRAR_RESULTADOS_FINAIS,...
-        USAR_WEBCAM_INTEGRADA);
+    imagemInicialDaCamera = tirarFotoComWebcam(USAR_WEBCAM_INTEGRADA);
+       
+    [imgCortadaRGB,temRostoNaImagem] = detectarRostoPorSegmentacao...
+        (imagemInicialDaCamera, ...
+        MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS);
     
     if temRostoNaImagem
     
         [luminanciaS, luminanciaNE, luminanciaNW] = ...
-            detectarLuminanciaDasTresDivisoesDoRosto(imgRGB, MOSTRAR_RESULTADOS_FINAIS);
+            detectarLuminanciaDasTresDivisoesDoRosto(imgCortadaRGB, MOSTRAR_RESULTADOS_FINAIS);
 
         disp('A luminância 1 (S) é:'); disp(luminanciaS);
         disp('A luminância 2 (NE) é'); disp(luminanciaNE);

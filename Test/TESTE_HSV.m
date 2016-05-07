@@ -10,12 +10,8 @@ function TESTE_HSV (USAR_WEBCAM_INTEGRADA)
 
     end
 
-    if USAR_WEBCAM_INTEGRADA
-        imgRGB = tirarFotoComWebcam(1);
-    else
-        imgRGB = tirarFotoComWebcam(2);
-    end
-
+    imgRGB = tirarFotoComWebcam(USAR_WEBCAM_INTEGRADA);
+       
     imgHSV = rgb2hsv(imgRGB);
 
     imshow(imgHSV)
