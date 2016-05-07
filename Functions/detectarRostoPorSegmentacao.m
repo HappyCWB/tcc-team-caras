@@ -1,24 +1,15 @@
 
 function [ imagemCortadaEm80por60RGB, temRostoNaImagem ]...
     = detectarRostoPorSegmentacao...
-    (MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
+    (imagemInicialDaCamera, ...
+    MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS)
 
     switch nargin
-        case 0
+        case 1
             MOSTRAR_RESULTADOS_INTERMEDIARIOS = 0;
             MOSTRAR_RESULTADOS_FINAIS = 0;
-            USAR_WEBCAM_INTEGRADA = 0;
-        case 1
-            MOSTRAR_RESULTADOS_FINAIS = 1;
-            USAR_WEBCAM_INTEGRADA = 0;
         case 2
-            USAR_WEBCAM_INTEGRADA = 0;
-    end
-    
-    if(USAR_WEBCAM_INTEGRADA)
-        [imagemInicialDaCamera] = tirarFotoComWebcam(1);
-    else
-        [imagemInicialDaCamera] = tirarFotoComWebcam(2);
+            MOSTRAR_RESULTADOS_FINAIS = 1;
     end
 
     if max(imagemInicialDaCamera) == 0
@@ -57,17 +48,25 @@ function [ imagemCortadaEm80por60RGB, temRostoNaImagem ]...
                         imagemBinariaContendoApenasRosto;   
                 end
 
-                [BoundingBox, plotDaElipse] = ...
+                [BoundingBox, plotDaElipse, ok] = ...
                     encontrarRetanguloEElipseNoRosto(imagemBinariaContendoApenasRosto);
 
-                if MOSTRAR_RESULTADOS_FINAIS == 1
-                    plotarResultadosFinais(imagemInicialDaCamera, imagemAposReconhecimento, ...
-                        plotDaElipse, BoundingBox);
+                if ok
+                    
+                    if MOSTRAR_RESULTADOS_FINAIS == 1
+                        plotarResultadosFinais(imagemInicialDaCamera, imagemAposReconhecimento, ...
+                            plotDaElipse, BoundingBox);
+                    end
+
+                    imagemCortada = imcrop(imagemInicialDaCamera, BoundingBox);
+
+                    imagemCortadaEm80por60RGB = imresize(imagemCortada, [80 60]);
+                    
+                else
+                    
+                    temRostoNaImagem = 0;
+                    imagemCortadaEm80por60RGB = imresize(imagemInicialDaCamera, [80 60]);
                 end
-
-                imagemCortada = imcrop(imagemInicialDaCamera, BoundingBox);
-
-                imagemCortadaEm80por60RGB = imresize(imagemCortada, [80 60]);
             
             else
                 
