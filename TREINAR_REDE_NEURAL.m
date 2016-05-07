@@ -1,12 +1,18 @@
 
-function [ ] = TREINAR_REDE_NEURAL( )
+function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
 
+    switch nargin
+    
+        case 0
+            MOSTRAR_RESULTADOS_FINAIS = 0;
+        
+    end
+    
     addpath ./Functions
     addpath ./Classes
     addpath ./Databases
     
-    clc 
-    clearvars
+    clearvars -except MOSTRAR_RESULTADOS_FINAIS
     close all
     
     load ./Databases/BancoDeDados
@@ -26,8 +32,14 @@ function [ ] = TREINAR_REDE_NEURAL( )
         numeroDeTreinamentos = numeroDeTreinamentos + 1;
     end
     
-    disp(erroDoTreinamento);
-    disp(numeroDeTreinamentos);
+    if (MOSTRAR_RESULTADOS_FINAIS)
+        disp(' ');
+        disp('Erro quadrático médio (MSE) do treinamento = ');
+        disp(erroDoTreinamento);
+        disp('Número de vezes que a rede foi treinada para chegar no resultado ótimo = ');
+        disp(numeroDeTreinamentos);
+    end
+    
     save ./Databases/BDRedeNeural net;
 
 end
