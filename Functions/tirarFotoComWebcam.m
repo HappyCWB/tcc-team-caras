@@ -16,7 +16,7 @@ function [ imagem ] = tirarFotoComWebcam(numeroDaWebcam)
                 'KeyPressFcn', @(src, evnt)acaoBotaoSair);
         
     listaDasWebcams = webcamlist;
-    [~, tamanhoDaLista] = size(listaDasWebcams);
+    [tamanhoDaLista, ~] = size(listaDasWebcams);
     ok = 0;
     
     switch numeroDaWebcam
