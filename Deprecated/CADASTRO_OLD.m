@@ -1,8 +1,8 @@
-function [  ] = TESTE_CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
+function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
 
-    addpath ./Functions
-    addpath ./Classes
-    addpath ./Databases
+    addpath ../Functions
+    addpath ../Classes
+    addpath ../Databases
 
     switch nargin
         case 0
@@ -21,32 +21,31 @@ function [  ] = TESTE_CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
     close all
 
     sairDoPrograma = 0;
-    vetorDosNumerosDeFotos = cell(1, 2);
+    vetorDosNumerosDeFotos = zeros(1, 2);
     
     marcarCheckbox = 0;
-    idMaisRecente = 1;
+    idMaisRecente = NomesDoCadastro.AMBIENTE;
     
     tamanhoAtual = 0;
     arrayDasFotos = cell(1);
     entradaRedeNeural = zeros(1,4800);
-    saidaRedeNeural = zeros(1,1);
+    saidaRedeNeural = zeros(1,4);
     
-    cadastro = CadastroDeNomes;
-    primeiroNome = '';
+    fazerSetupDoCadastro();
     
     carregarVariaveisDoBancoDeDados;
 
     while (sairDoPrograma == 0)
 
-        imagemCortada = detectarRostoPorSegmentacao...
-            (MOSTRAR_RESULTADOS_INTERMEDIARIOS, ...
-             MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA);
+        imagemCortada = detectarRostoPorSegmentacao ...
+        (MOSTRAR_RESULTADOS_INTERMEDIARIOS, ...
+            MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA);
 
-        if naoHaImagem(imagemCortada) == 1
+        if naoHaImagem(imagemCortada)
             
             sairDoPrograma = 1;
             
-        elseif imagemEstaVazia(imagemCortada) == 1
+        elseif imagemEstaVazia(imagemCortada)
             
             disp('Nenhum rosto encontrado!');
             disp(' ');
@@ -76,7 +75,7 @@ function [  ] = TESTE_CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
                     'KeyPressFcn', @(src, evnt)acaoBotaoSair);
 
             checkboxPessoaAnterior = uicontrol('Style','checkbox',...
-                    'String',cadastro.nomeDoID(idMaisRecente),...
+                    'String',['Registrar como:  '  NomesDoCadastro.NomeDoID(idMaisRecente)],...
                     'Position',[20 5 250 20], ...
                     'Value',marcarCheckbox);
 
@@ -91,41 +90,33 @@ function [  ] = TESTE_CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
     
     disp('Até breve!');
     
+    function fazerSetupDoCadastro()
+        
+        vetorDosNumerosDeFotos(1, 1) = 1;
+        vetorDosNumerosDeFotos(2, 1) = 2;
+        vetorDosNumerosDeFotos(3, 1) = 3;
+        vetorDosNumerosDeFotos(4, 1) = 4;
+        
+    end
+    
     function acaoBotaoSim(~,~,imagemCortada)
 
         if get(checkboxPessoaAnterior, 'Value') == 0
-            
-            save BancoDeDados cadastro
-            idDaPessoa = escolherPessoaDaFoto();
-            load BancoDeDados cadastro
+            idDaPessoa = escolherPessoaDaFotoPorClique();
 
             idMaisRecente = idDaPessoa;
             marcarCheckbox = 1;
         end
         
-        if idMaisRecente > 0
+        tamanhoAtual = tamanhoAtual + 1;
         
-            if tamanhoAtual == 0
-                colocarNovoUsuarioNoVetorDeFotos(idMaisRecente);
-            else
-                [linhas, ~] = size(vetorDosNumerosDeFotos);
+        vetorDosNumerosDeFotos(idMaisRecente, 2) = vetorDosNumerosDeFotos(idMaisRecente, 2) + 1;
+        
+        guardarNosVetores(imagemCortada, idMaisRecente);
 
-                if idMaisRecente > linhas
-                   colocarNovoUsuarioNoVetorDeFotos(idMaisRecente);
-                end
-            end
-            
-            tamanhoAtual = tamanhoAtual + 1;
-
-            somarUmaFotoAoID(idMaisRecente);
-
-            guardarNosVetoresParaRedeNeural(imagemCortada, idMaisRecente);
-
-            apresentarResultadosParciais();
-
-            salvarVariaveisNoBancoDeDados;
-            
-        end
+        apresentarResultadosParciais();
+        
+        salvarVariaveisNoBancoDeDados;
         
         delete(telaEscolha);
 
@@ -147,18 +138,7 @@ function [  ] = TESTE_CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
 
     end
 
-    function somarUmaFotoAoID (ID)
-        vetorDosNumerosDeFotos{ID, 2} = ...
-            vetorDosNumerosDeFotos{ID, 2} + 1;
-    end
-
-    function colocarNovoUsuarioNoVetorDeFotos(idMaisRecente)
-         vetorDosNumerosDeFotos(idMaisRecente, 1) = ...
-             cadastro.nomeDoID(idMaisRecente);
-         vetorDosNumerosDeFotos(idMaisRecente, 2) = {0};
-    end
-
-    function guardarNosVetoresParaRedeNeural(imagemCortada, idMaisRecente)
+    function guardarNosVetores(imagemCortada, idMaisRecente)
         
         arrayDasFotos{tamanhoAtual} = imagemCortada;
         
@@ -172,28 +152,24 @@ function [  ] = TESTE_CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
 
     function apresentarResultadosParciais()
        
-        disp(' ');
-        disp('Número de fotos:');
-        disp(' ');
+        disp('1 = Lucas ; 2 = Luis ; 3 = Matheus ; 4 = Ambiente : ');
         disp(vetorDosNumerosDeFotos);
         
     end
 
     function salvarVariaveisNoBancoDeDados()
        
-        save ./Databases/BancoDeDados idMaisRecente marcarCheckbox ...
+        save BancoDeDados idMaisRecente marcarCheckbox ...
             vetorDosNumerosDeFotos entradaRedeNeural ...
-            saidaRedeNeural tamanhoAtual arrayDasFotos ...
-            cadastro primeiroNome;
+            saidaRedeNeural tamanhoAtual arrayDasFotos;
         
     end
 
     function carregarVariaveisDoBancoDeDados()
        
-        load ./Databases/BancoDeDados idMaisRecente marcarCheckbox ...
+        load BancoDeDados idMaisRecente marcarCheckbox ...
             vetorDosNumerosDeFotos entradaRedeNeural ...
-            saidaRedeNeural tamanhoAtual arrayDasFotos ...
-            cadastro primeiroNome;
+            saidaRedeNeural tamanhoAtual arrayDasFotos;
         
     end
 

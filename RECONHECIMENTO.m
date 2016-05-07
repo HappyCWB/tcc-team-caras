@@ -23,47 +23,9 @@ function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
     
     [imagemCortada, temRostoNaImagem] = detectarRostoPorSegmentacao(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA);
 
-    entradaDoTeste = reshape(imagemCortada, 14400, 1);
+    imagemCortadaGray = rgb2gray(imagemCortada);
     
-    load BDRedeNeural net
-    
-    [taxaDeCerteza, idDaPessoa] = max(net(entradaDoTeste))
-
-    if taxaDeCerteza < 0.6
-        
-        if temRostoNaImagem
-                
-            disp('Vejo um rosto, mas não sei quem é...');
-                
-        else
-            
-            disp('AMBIENTE...');
-
-        end
-        
-    else
-    
-        switch idDaPessoa
-
-            case 1
-
-                disp('Olá, LUCAS!');
-
-            case 2
-
-                disp('Olá, LUIS!');
-
-            case 3
-
-                disp('Olá, MATHEUS!');
-
-            otherwise
-
-                disp('AMBIENTE...');
-
-        end
-        
-    end
+    reconhecerQuemEstaNaImagem(imagemCortadaGray, temRostoNaImagem);
     
 end
 
