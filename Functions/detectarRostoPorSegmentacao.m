@@ -35,10 +35,17 @@ function [ imagemCortadaEm80por60RGB, temRostoNaImagem ]...
 
         imagemPele = segmentacaoPorPele(imagemInicialEmRGB);
 
+        imagemDeteccaoDeBordas = edge(imagemPele, 'canny');
+        imagemDeteccaoDeBordasDilatada = ...
+            dilatacaoComQuadradoVariavel(imagemDeteccaoDeBordas, 3);
+        
+        imagemPeleComDeteccaoDeBordas = imagemPele - imagemDeteccaoDeBordasDilatada;
+        
         imagemBinariaPosTratamento = ...
-            sequenciaDeTratamentosDeImagem(imagemPele, MOSTRAR_RESULTADOS_INTERMEDIARIOS);
+            sequenciaDeTratamentosDeImagem (imagemPeleComDeteccaoDeBordas, ...
+                                            MOSTRAR_RESULTADOS_INTERMEDIARIOS);
 
-        if contemCandidatosARostoNaImagem(imagemBinariaPosTratamento) == 1
+        if contemCandidatosARostoNaImagem(imagemBinariaPosTratamento)
             
             [imagemBinariaContendoApenasRosto, temRostoNaImagem] = ...
                 deixarApenasRostoNaImagem(imagemBinariaPosTratamento);
