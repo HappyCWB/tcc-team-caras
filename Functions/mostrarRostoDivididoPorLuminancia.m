@@ -56,23 +56,23 @@ function mostrarRostoDivididoPorLuminancia ...
            
            % ZONA SUL
            if (i > (-inclinacao*j + height)) && (i > (inclinacao*j))
-               imagemRostoDivididoPorLuminancia(i,j,1) = luminanciaS*255/100;
-               imagemRostoDivididoPorLuminancia(i,j,2) = luminanciaS*255/100;
-               imagemRostoDivididoPorLuminancia(i,j,3) = luminanciaS*255/100;
+               imagemRostoDivididoPorLuminancia(i,j,1) = luminanciaS*65;
+               imagemRostoDivididoPorLuminancia(i,j,2) = luminanciaS*65;
+               imagemRostoDivididoPorLuminancia(i,j,3) = luminanciaS*65;
            end
            
            % ZONA NE
            if (j > width/2) && (i < inclinacao*j)
-               imagemRostoDivididoPorLuminancia(i,j,1) = luminanciaNE*255/100;
-               imagemRostoDivididoPorLuminancia(i,j,2) = luminanciaNE*255/100;
-               imagemRostoDivididoPorLuminancia(i,j,3) = luminanciaNE*255/100;
+               imagemRostoDivididoPorLuminancia(i,j,1) = luminanciaNE*65;
+               imagemRostoDivididoPorLuminancia(i,j,2) = luminanciaNE*65;
+               imagemRostoDivididoPorLuminancia(i,j,3) = luminanciaNE*65;
            end
            
            % ZONA NW
            if (j < width/2) && (i < (-inclinacao*j + height))
-               imagemRostoDivididoPorLuminancia(i,j,1) = luminanciaNW*255/100;
-               imagemRostoDivididoPorLuminancia(i,j,2) = luminanciaNW*255/100;
-               imagemRostoDivididoPorLuminancia(i,j,3) = luminanciaNW*255/100;
+               imagemRostoDivididoPorLuminancia(i,j,1) = luminanciaNW*65;
+               imagemRostoDivididoPorLuminancia(i,j,2) = luminanciaNW*65;
+               imagemRostoDivididoPorLuminancia(i,j,3) = luminanciaNW*65;
            end
            
        end
