@@ -9,7 +9,7 @@ function [ imagemContendoApenasRosto, temRostoNaImagem ] = deixarApenasRostoNaIm
         'Area', 'Eccentricity', 'Orientation');
     
     areas = [blobMeasurements.Area];
-    eccentricities = [blobMeasurements.Eccentricity];
+    %eccentricities = [blobMeasurements.Eccentricity];
     orientations = [blobMeasurements.Orientation];
     
     idDoMaiorComFormatoDeRosto = 0;
@@ -35,14 +35,17 @@ function [ imagemContendoApenasRosto, temRostoNaImagem ] = deixarApenasRostoNaIm
         end
     end
     
-    if idDoMaiorComFormatoDeRosto == 0
+    if idDoMaiorComFormatoDeRosto > 0 
+        if areas(idDoMaiorComFormatoDeRosto) > 5000
+            temRostoNaImagem = 1;
+            imagemContendoApenasRosto = imagemBinariaComVariosObjetos;
+        else
+            temRostoNaImagem = 0;
+            imagemContendoApenasRosto = 0;
+        end
+    else
         temRostoNaImagem = 0;
         imagemContendoApenasRosto = 0;
-    else
-        temRostoNaImagem = 1;
-%         imagemContendoApenasRosto = bwareaopen(imagemBinariaComVariosObjetos, ...
-%             areas(idDoMaiorComFormatoDeRosto)-1);
-        imagemContendoApenasRosto = imagemBinariaComVariosObjetos;
     end
     
 end
