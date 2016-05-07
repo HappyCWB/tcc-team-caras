@@ -1,4 +1,4 @@
-function [  ] = TESTE_CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
+function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
 
     addpath ./Functions
     addpath ./Classes
@@ -31,8 +31,8 @@ function [  ] = TESTE_CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
     entradaRedeNeural = zeros(1,4800);
     saidaRedeNeural = zeros(1,1);
     
-    cadastro = CadastroDeNomes;
-    primeiroNome = '';
+    cadastro = CadastroDeNomes('Ambiente');
+    colocarNovoUsuarioNoVetorDeFotos(1);
     
     carregarVariaveisDoBancoDeDados;
 
@@ -184,7 +184,7 @@ function [  ] = TESTE_CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
         save ./Databases/BancoDeDados idMaisRecente marcarCheckbox ...
             vetorDosNumerosDeFotos entradaRedeNeural ...
             saidaRedeNeural tamanhoAtual arrayDasFotos ...
-            cadastro primeiroNome;
+            cadastro;
         
     end
 
@@ -193,7 +193,7 @@ function [  ] = TESTE_CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
         load ./Databases/BancoDeDados idMaisRecente marcarCheckbox ...
             vetorDosNumerosDeFotos entradaRedeNeural ...
             saidaRedeNeural tamanhoAtual arrayDasFotos ...
-            cadastro primeiroNome;
+            cadastro;
         
     end
 
