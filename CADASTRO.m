@@ -4,17 +4,7 @@ function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_F
     addpath ./Classes
     addpath ./Databases
 
-    switch nargin
-        case 0
-            MOSTRAR_RESULTADOS_INTERMEDIARIOS = 0;
-            MOSTRAR_RESULTADOS_FINAIS = 0;
-            USAR_WEBCAM_INTEGRADA =0;
-        case 1
-            MOSTRAR_RESULTADOS_FINAIS = 1;
-            USAR_WEBCAM_INTEGRADA = 0;
-        case 2
-            USAR_WEBCAM_INTEGRADA = 0;
-    end
+    ajustarParametrosOpcionais(nargin);
     
     clc
     clearvars -except MOSTRAR_RESULTADOS_INTERMEDIARIOS MOSTRAR_RESULTADOS_FINAIS USAR_WEBCAM_INTEGRADA
@@ -38,9 +28,11 @@ function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_F
 
     while (sairDoPrograma == 0)
 
+        [imagemInicialDaCamera] = tirarFotoComWebcam(USAR_WEBCAM_INTEGRADA);
+       
         imagemCortada = detectarRostoPorSegmentacao...
-            (MOSTRAR_RESULTADOS_INTERMEDIARIOS, ...
-             MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA);
+            (imagemInicialDaCamera, ...
+            MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS);
 
         if naoHaImagem(imagemCortada) == 1
             
@@ -199,12 +191,32 @@ function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_F
     end
 
     function rotinaDeSaidaDoCadastro
-        disp('Treinando Rede Neural...');
-        disp(' ');
-        TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS);
-        disp('Rede Neural treinada com sucesso.')
-        disp(' ');
+        
+        if tamanhoAtual > 0
+            disp('Treinando Rede Neural...');
+            disp(' ');
+            TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS);
+            disp('Rede Neural treinada com sucesso.')
+            disp(' ');
+        end
+        
         disp('Até breve!');
+    end
+
+function ajustarParametrosOpcionais(nargin)
+        
+        switch nargin
+            case 0
+                MOSTRAR_RESULTADOS_INTERMEDIARIOS = 0;
+                MOSTRAR_RESULTADOS_FINAIS = 0;
+                USAR_WEBCAM_INTEGRADA = 0;
+            case 1
+                MOSTRAR_RESULTADOS_FINAIS = 1;
+                USAR_WEBCAM_INTEGRADA = 0;
+            case 2
+                USAR_WEBCAM_INTEGRADA = 0;
+        end
+        
     end
 
 end
