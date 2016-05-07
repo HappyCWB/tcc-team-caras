@@ -10,12 +10,9 @@ function TESTE_DETECCAO_BORDAS (USAR_WEBCAM_INTEGRADA)
 
     end
 
-    if USAR_WEBCAM_INTEGRADA
-        imgRGB = tirarFotoComWebcam(1);
-    else
-        imgRGB = tirarFotoComWebcam(2);
-    end
-
+    
+    imgRGB = tirarFotoComWebcam(USAR_WEBCAM_INTEGRADA);
+   
     imgGray = rgb2gray(imgRGB);
     
     BW1 = edge(imgGray,'sobel');
