@@ -1,6 +1,8 @@
 
 function TESTE_DIVISAO_DO_ROSTO (MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
 
+    tic;
+    
     addpath ../Functions
     
     clc
@@ -38,5 +40,7 @@ function TESTE_DIVISAO_DO_ROSTO (MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESU
         disp('Nenhum rosto encontrado');
         
     end
+    
+    timespent = toc
    
 end
