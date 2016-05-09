@@ -7,7 +7,7 @@
 %
 % Data: 09/05/2016
 
-function [  ] = RECONHECIMENTO_AUTOMATICO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
+function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
 
     addpath ./Functions
     addpath ./Classes
@@ -16,47 +16,58 @@ function [  ] = RECONHECIMENTO_AUTOMATICO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOS
     ajustarParametrosOpcionais(nargin);
     
     limparTelaEVariaveis;
-    
-    sair = 0;
-    
-    [camera, handleDaTela] = abrirPreviewDaCamera(USAR_WEBCAM_INTEGRADA);
-    
-%     checkboxParada = uicontrol('Style', 'checkbox',...
-%         'String', 'Parar de tirar fotos',...
-%         'Position', [350 400 200 20],...
-%         'Value', 0, ...
-%         'Callback', @(src, evnt)acaoCheckbox() ...
-%         );
 
-    botaoSair = uicontrol('Style', 'pushbutton',...
-            'String', 'Sair',...
-            'Position', [515 380 40 40],...
-            'Callback', @(src, evnt)acaoBotaoSair() ...
-        );
+    load ./Databases/BancoDeDados tamanhoAtual
     
-%    contagem = 0;
-    
-    while sair == 0
+    if tamanhoAtual > 0
         
-%        if contagem > 1000
-            
-            imagemInicialDaCamera = snapshot(camera);
-%             hold on
+        sair = 0;
+    
+        [camera, handleDaTela] = abrirPreviewDaCamera(USAR_WEBCAM_INTEGRADA);
 
-            [idDaPessoa, temRostoNaImagem, luminanciaS, luminanciaNE, luminanciaNW] = ...
-                fazerReconhecimentoEDeteccaoDeLuminanciaDaImagem(imagemInicialDaCamera, ...
-                    MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS);
-                
-%             x = 1 : 0.1 : 1000;
-%             y = x.^2;
-%             plot(x,y);
+    %     checkboxParada = uicontrol('Style', 'checkbox',...
+    %         'String', 'Parar de tirar fotos',...
+    %         'Position', [350 400 200 20],...
+    %         'Value', 0, ...
+    %         'Callback', @(src, evnt)acaoCheckbox() ...
+    %         );
+
+        botaoSair = uicontrol('Style', 'pushbutton',...
+                'String', 'Sair',...
+                'Position', [515 380 40 40],...
+                'Callback', @(src, evnt)acaoBotaoSair() ...
+            );
+
+    %    contagem = 0;
+
+        while sair == 0
+
+    %        if contagem > 1000
+
+                imagemInicialDaCamera = snapshot(camera);
+    %             hold on
+
+                [idDaPessoa, temRostoNaImagem, luminanciaS, luminanciaNE, luminanciaNW] = ...
+                    fazerReconhecimentoEDeteccaoDeLuminanciaDaImagem(imagemInicialDaCamera, ...
+                        MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS);
+
+    %             x = 1 : 0.1 : 1000;
+    %             y = x.^2;
+    %             plot(x,y);
+
+    %            contagem = 0;
+    %        end
+
+    %        contagem = contagem + 1;
+        end
+    
+    else
         
-%            contagem = 0;
-%        end
-        
-%        contagem = contagem + 1;
+        disp('Você não cadastrou nenhuma foto ainda!');
+        disp(' ');
+        disp('Utilize a função CADASTRO antes.');
+        disp(' ');
     end
-    
     
     close all
     disp('Até breve!');

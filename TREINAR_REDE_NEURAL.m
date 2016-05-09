@@ -18,35 +18,48 @@ function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
     clearvars -except MOSTRAR_RESULTADOS_FINAIS
     close all
     
-    load ./Databases/BancoDeDados entradaRedeNeural saidaRedeNeural
+    load ./Databases/BancoDeDados tamanhoAtual
     
-    erroDoTreinamento = 1;
-    numeroDeTreinamentos = 0;
+    if tamanhoAtual > 0
     
-    while (erroDoTreinamento > 0.01 && numeroDeTreinamentos < 5)
-        net = patternnet(50);
-        net.trainParam.showWindow = false;
-        net = train(net,entradaRedeNeural',saidaRedeNeural');
+        load ./Databases/BancoDeDados entradaRedeNeural saidaRedeNeural
 
-        resultados = net(entradaRedeNeural');
-        erroDoTreinamento = perform(net,saidaRedeNeural',resultados);
-        %classes = vec2ind(y);
-        
-        numeroDeTreinamentos = numeroDeTreinamentos + 1;
-    end
-    
-    if (MOSTRAR_RESULTADOS_FINAIS)
+        erroDoTreinamento = 1;
+        numeroDeTreinamentos = 0;
+
+        while (erroDoTreinamento > 0.01 && numeroDeTreinamentos < 5)
+            net = patternnet(50);
+            net.trainParam.showWindow = false;
+            net = train(net,entradaRedeNeural',saidaRedeNeural');
+
+            resultados = net(entradaRedeNeural');
+            erroDoTreinamento = perform(net,saidaRedeNeural',resultados);
+            %classes = vec2ind(y);
+
+            numeroDeTreinamentos = numeroDeTreinamentos + 1;
+        end
+
+        if (MOSTRAR_RESULTADOS_FINAIS)
+            disp(' ');
+            disp('Erro quadrático médio (MSE) do treinamento = ');
+            disp(erroDoTreinamento);
+            disp('Número de vezes que a rede foi treinada para chegar no resultado ótimo = ');
+            disp(numeroDeTreinamentos);
+        end
+
+        save ./Databases/BDRedeNeural net;
+
         disp(' ');
-        disp('Erro quadrático médio (MSE) do treinamento = ');
-        disp(erroDoTreinamento);
-        disp('Número de vezes que a rede foi treinada para chegar no resultado ótimo = ');
-        disp(numeroDeTreinamentos);
+        disp('Rede Neural treinada com sucesso!');
+        
+    else
+        disp(' ');
+        disp('Você não cadastrou nenhuma foto ainda!');
+        disp(' ');
+        disp('Utilize a função CADASTRO antes.');
+        disp(' ');
+        disp('Até breve!');
     end
-    
-    save ./Databases/BDRedeNeural net;
-    
-    disp(' ');
-    disp('Rede Neural treinada com sucesso!');
     
     function ajustarParametrosOpcionais(nargin)
        

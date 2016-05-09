@@ -17,5 +17,8 @@ function RESETAR_CADASTRO
     save ./Databases/BancoDeDados tamanhoAtual
     
     clearvars
+    
+    disp(' ');
+    disp('Cadastro resetado com sucesso.');
 end
 

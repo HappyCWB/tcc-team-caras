@@ -7,7 +7,7 @@
 %
 % Data: 09/05/2016
 
-function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
+function [  ] = RECONHECIMENTO_UNITARIO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
 
     addpath ./Functions
     addpath ./Classes
@@ -19,25 +19,37 @@ function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
     clearvars -except MOSTRAR_RESULTADOS_INTERMEDIARIOS MOSTRAR_RESULTADOS_FINAIS USAR_WEBCAM_INTEGRADA
     close all
     
-    [imagemInicialDaCamera] = tirarFotoComWebcam(USAR_WEBCAM_INTEGRADA);
-       
-    [imagemCortada, temRostoNaImagem] = detectarRostoPorSegmentacao...
-            (imagemInicialDaCamera, ...
-            MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS);
+    load ./Databases/BancoDeDados tamanhoAtual
     
-    imagemCortadaGray = rgb2gray(imagemCortada);
+    if tamanhoAtual > 0
     
-    [taxaDeCerteza, idDaPessoa] = ...
-        reconhecerQuemEstaNaImagem(imagemCortadaGray);
-    
-    imprimirResultadosDoReconhecimento(taxaDeCerteza, idDaPessoa, temRostoNaImagem);
-    
-    if temRostoNaImagem
-    
-        [luminanciaS, luminanciaNE, luminanciaNW] = ...
-            detectarLuminanciaDasTresDivisoesDoRosto(imagemCortada, MOSTRAR_RESULTADOS_FINAIS);
+        [imagemInicialDaCamera] = tirarFotoComWebcam(USAR_WEBCAM_INTEGRADA);
 
-        imprimirLuminancias(luminanciaS, luminanciaNE, luminanciaNW);
+        [imagemCortada, temRostoNaImagem] = detectarRostoPorSegmentacao...
+                (imagemInicialDaCamera, ...
+                MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS);
+
+        imagemCortadaGray = rgb2gray(imagemCortada);
+
+        [taxaDeCerteza, idDaPessoa] = ...
+            reconhecerQuemEstaNaImagem(imagemCortadaGray);
+
+        imprimirResultadosDoReconhecimento(taxaDeCerteza, idDaPessoa, temRostoNaImagem);
+
+        if temRostoNaImagem
+
+            [luminanciaS, luminanciaNE, luminanciaNW] = ...
+                detectarLuminanciaDasTresDivisoesDoRosto(imagemCortada, MOSTRAR_RESULTADOS_FINAIS);
+
+            imprimirLuminancias(luminanciaS, luminanciaNE, luminanciaNW);
+        end
+        
+    else
+        disp('Você não cadastrou nenhuma foto ainda!');
+        disp(' ');
+        disp('Utilize a função CADASTRO antes.');
+        disp(' ');
+        disp('Até breve!');
     end
     
     function ajustarParametrosOpcionais(nargin)
