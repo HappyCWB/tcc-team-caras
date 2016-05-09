@@ -11,20 +11,21 @@ Como utilizar:
 
 1 - Utilize a função CADASTRO para cadastrar pessoas / ambiente
 
-1.1 - Utilize a função RESETAR_CADASTRO para reiniciar todos os dados cadastrais.
+2 - Utilize a função RECONHECIMENTO_AUTOMATICO para fazer o reconhecimento sem precisar clicar em botões!
 
-3.1 - Utilize a função RECONHECIMENTO para testar uma só vez!
+Observações:
 
-3.2 - Utilize a função RECONHECIMENTO_AUTOMATICO para fazer o reconhecimento sem precisar clicar em botões!
+I - Pode-se inserir mais pessoas no cadastro a qualquer momento, bastando utilizar a função CADASTRO novamente.
 
+II - Utilize a função RESETAR_CADASTRO para reiniciar todos os dados cadastrais.
 
-OBS: pode-se inserir mais pessoas no cadastro após o reconhecimento, se desejado.
+III - Utilize a função RECONHECIMENTO para testar apenas uma foto!
 
+IV - Utilize a função TREINAR_REDE_NEURAL se desejar treinar novamente a rede para obter resultados levemente diferentes.
 
-OBS2: para ver os resultados intermediários e finais do reconhecimento facial, basta utilizar os parâmetros opcionais das funções acima.
+V - Para ver os resultados intermediários e finais do reconhecimento facial, basta utilizar os parâmetros opcionais das funções acima.
 
-
-ILUMINAÇÃO:
+TESTE DE LUMINÂNCIA NAS DIVISÕES DO ROSTO:
 
 Como utilizar:
 
