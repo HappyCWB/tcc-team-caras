@@ -1,3 +1,12 @@
+% TCC: Desenvolvimento de um Sistema de Reconhecimento Facial com Controle 
+% de Iluminação PID
+%
+% Alunos: Lucas Vazquez, Luis Lopes e Matheus Wisniewski
+
+% Contato: matheus.maw@gmail.com
+%
+% Data: 09/05/2016
+
 function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
 
     addpath ./Functions
