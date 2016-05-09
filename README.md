@@ -11,7 +11,7 @@ Como utilizar:
 
 1 - Utilize a função CADASTRO para cadastrar pessoas / ambiente
 
-2 - Utilize a função TREINAR_REDE_NEURAL
+1.1 - Utilize a função RESETAR_CADASTRO para reiniciar todos os dados cadastrais.
 
 3.1 - Utilize a função RECONHECIMENTO para testar uma só vez!
 
@@ -19,6 +19,7 @@ Como utilizar:
 
 
 OBS: pode-se inserir mais pessoas no cadastro após o reconhecimento, se desejado.
+
 
 OBS2: para ver os resultados intermediários e finais do reconhecimento facial, basta utilizar os parâmetros opcionais das funções acima.
 
