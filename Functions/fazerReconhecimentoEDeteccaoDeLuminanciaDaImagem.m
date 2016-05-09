@@ -13,7 +13,7 @@ function [idDaPessoa, temRostoNaImagem, luminanciaS, luminanciaNE, luminanciaNW]
 
     imprimirResultadosDoReconhecimento(taxaDeCerteza, idDaPessoa, temRostoNaImagem);
 
-    if temRostoNaImagem
+    if temRostoNaImagem && idDaPessoa ~= 1
 
         [luminanciaS, luminanciaNE, luminanciaNW] = ...
             detectarLuminanciaDasTresDivisoesDoRosto(imagemCortada, MOSTRAR_RESULTADOS_FINAIS);
