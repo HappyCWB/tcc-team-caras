@@ -2,6 +2,7 @@
 Desenvolvimento de um Sistema de Reconhecimento Facial com Controle de Iluminação PID
 
 Início:   01/2015
+
 Entrega:  06/2016
 
 
@@ -34,3 +35,7 @@ Entrega:  06/2016
 *2 -* Utilize a função **TESTE_DIVISAO_DO_ROSTO**
 
 Os resultados são dados em luminância.
+
+#OBSERVAÇÃO GERAL
+
+Todos as mensagens de commit estão em inglês, simplesmente para não perder a prática :)
