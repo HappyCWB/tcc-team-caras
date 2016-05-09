@@ -13,9 +13,14 @@ Como utilizar:
 
 2 - Utilize a função TREINAR_REDE_NEURAL
 
-3 - Utilize a função RECONHECIMENTO para testar!
+3.1 - Utilize a função RECONHECIMENTO para testar uma só vez!
+
+3.2 - Utilize a função RECONHECIMENTO_AUTOMATICO para fazer o reconhecimento sem precisar clicar em botões!
+
 
 OBS: pode-se inserir mais pessoas no cadastro após o reconhecimento, se desejado.
+
+OBS2: para ver os resultados intermediários e finais do reconhecimento facial, basta utilizar os parâmetros opcionais das funções acima.
 
 
 ILUMINAÇÃO:
