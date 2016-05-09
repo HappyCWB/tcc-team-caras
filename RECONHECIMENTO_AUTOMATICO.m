@@ -7,12 +7,9 @@ function [  ] = RECONHECIMENTO_AUTOMATICO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOS
 
     ajustarParametrosOpcionais(nargin);
     
-    clc
-    clearvars -except MOSTRAR_RESULTADOS_INTERMEDIARIOS MOSTRAR_RESULTADOS_FINAIS USAR_WEBCAM_INTEGRADA
-    close all
+    limparTelaEVariaveis;
     
     sair = 0;
-    pararDeTirarFotos = 0;
     
     [camera, handleDaTela] = abrirPreviewDaCamera(USAR_WEBCAM_INTEGRADA);
     
@@ -29,19 +26,34 @@ function [  ] = RECONHECIMENTO_AUTOMATICO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOS
             'Callback', @(src, evnt)acaoBotaoSair() ...
         );
     
-    contagem = 0;
+%    contagem = 0;
     
-        
     while sair == 0
         
-        imagemInicialDaCamera = snapshot(camera);
+%        if contagem > 1000
+            
+            imagemInicialDaCamera = snapshot(camera);
+%             hold on
 
-        [idDaPessoa, temRostoNaImagem, luminanciaS, luminanciaNE, luminanciaNW] = ...
-            fazerReconhecimentoEDeteccaoDeLuminanciaDaImagem(imagemInicialDaCamera, ...
-                MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS);
+            [idDaPessoa, temRostoNaImagem, luminanciaS, luminanciaNE, luminanciaNW] = ...
+                fazerReconhecimentoEDeteccaoDeLuminanciaDaImagem(imagemInicialDaCamera, ...
+                    MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS);
+                
+%             x = 1 : 0.1 : 1000;
+%             y = x.^2;
+%             plot(x,y);
+        
+%            contagem = 0;
+%        end
+        
+%        contagem = contagem + 1;
     end
     
+    
+    close all
     disp('Até breve!');
+    
+    
     
     function acaoBotaoSair()
         
@@ -63,6 +75,13 @@ function [  ] = RECONHECIMENTO_AUTOMATICO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOS
                 USAR_WEBCAM_INTEGRADA = 0;
         end
         
+    end
+
+    function limparTelaEVariaveis
+        
+        clc
+        clearvars -except MOSTRAR_RESULTADOS_INTERMEDIARIOS MOSTRAR_RESULTADOS_FINAIS USAR_WEBCAM_INTEGRADA
+        close all
     end
     
 end
