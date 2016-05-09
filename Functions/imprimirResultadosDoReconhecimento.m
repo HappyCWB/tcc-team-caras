@@ -7,7 +7,11 @@ function imprimirResultadosDoReconhecimento( taxaDeCerteza, idDaPessoa, temRosto
     
     disp(' ');
     disp(['Taxa de certeza da Rede Neural: ' taxaDeCertezaSTR '%']);
-    disp(['ID da pessoa: ' idDaPessoaSTR]);
+    if idDaPessoa > 1
+        disp(['ID da pessoa: ' idDaPessoaSTR]);
+    else
+        disp(['ID da pessoa: ' idDaPessoaSTR ' (Ambiente)']);
+    end
     disp(' ');
     
     if taxaDeCerteza < 0.70
@@ -19,7 +23,7 @@ function imprimirResultadosDoReconhecimento( taxaDeCerteza, idDaPessoa, temRosto
         
         else
             
-            disp('Vejo apenas ambiente.');
+            disp(' ');
             disp(' ');
         end
         
@@ -28,7 +32,7 @@ function imprimirResultadosDoReconhecimento( taxaDeCerteza, idDaPessoa, temRosto
     nomeEncontrado = char(cadastro.nomeDoID(idDaPessoa));
     
     if idDaPessoa == 1
-        disp('Vejo apenas ambiente.');
+        disp(' ');
     else
         disp(['Olá, ' nomeEncontrado '.']);
     end
