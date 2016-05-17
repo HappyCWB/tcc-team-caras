@@ -16,6 +16,8 @@ function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
     ajustarParametrosOpcionais(nargin);
     
     limparTelaEVariaveis;
+    
+    %arduinoSerial = inicializarArduino;
 
     load ./Databases/BancoDeDados tamanhoAtual
     
@@ -25,12 +27,6 @@ function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
     
         [camera, handleDaTela] = abrirPreviewDaCamera(USAR_WEBCAM_INTEGRADA);
 
-    %     checkboxParada = uicontrol('Style', 'checkbox',...
-    %         'String', 'Parar de tirar fotos',...
-    %         'Position', [350 400 200 20],...
-    %         'Value', 0, ...
-    %         'Callback', @(src, evnt)acaoCheckbox() ...
-    %         );
 
         botaoSair = uicontrol('Style', 'pushbutton',...
                 'String', 'Sair',...
@@ -38,41 +34,38 @@ function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
                 'Callback', @(src, evnt)acaoBotaoSair() ...
             );
 
-    %    contagem = 0;
-
+        fileID = fopen('Resultados.txt','w');
+        
         while sair == 0
 
-    %        if contagem > 1000
-
+            if(isvalid(handleDaTela))
+               
                 imagemInicialDaCamera = snapshot(camera);
-    %             hold on
+                hold on
 
-                [idDaPessoa, temRostoNaImagem, luminanciaS, luminanciaNE, luminanciaNW] = ...
+                [idDaPessoa, temRostoNaImagem, luminanciaS, luminanciaNE, luminanciaNW, BoundingBox] = ...
                     fazerReconhecimentoEDeteccaoDeLuminanciaDaImagem(imagemInicialDaCamera, ...
                         MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS);
 
-    %             x = 1 : 0.1 : 1000;
-    %             y = x.^2;
-    %             plot(x,y);
-
-    %            contagem = 0;
-    %        end
-
-    %        contagem = contagem + 1;
+                colocarBoundingBoxNoRosto;
+                
+%                 if isvalid(arduinoSerial)
+%                     if (temRostoNaImagem && luminanciaS > 0 && luminanciaNE > 0 && luminanciaNW > 0)
+%                         enviarMensagemParaArduino;
+%                     end
+%                 end
+                              
+                fprintf(fileID, '%d\n', idDaPessoa);
+            end
         end
     
     else
         
-        disp('Você não cadastrou nenhuma foto ainda!');
-        disp(' ');
-        disp('Utilize a função CADASTRO antes.');
-        disp(' ');
+        mensagemDeErroDeFaltaDeFotosNoCadastro;
+        
     end
     
-    close all
-    disp('Até breve!');
-    
-    
+    finalizarPrograma;
     
     function acaoBotaoSair()
         
@@ -101,6 +94,90 @@ function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
         clc
         clearvars -except MOSTRAR_RESULTADOS_INTERMEDIARIOS MOSTRAR_RESULTADOS_FINAIS USAR_WEBCAM_INTEGRADA
         close all
+    end
+
+    function colocarBoundingBoxNoRosto
+        
+        if (BoundingBox ~= 0)
+            rect = rectangle('Position',BoundingBox,'LineWidth',5,'LineStyle','-','EdgeColor','r');
+
+                set(rect,'Visible','on')
+
+                pause(0.02);
+
+            if (isvalid(rect))
+
+                set(rect,'Visible','off')
+            end
+
+        end
+        
+    end
+
+    function arduinoSerial = inicializarArduino
+       
+        delete(instrfindall);
+        
+        baudrate = 57600;
+        arduinoSerial = serial('COM3','BaudRate', baudrate); 
+        
+        if isvalid(arduinoSerial)
+            fopen(arduinoSerial); 
+            pause(2);
+        end
+
+    end
+
+    function enviarMensagemParaArduino
+      
+        valorQuadrante1 = num2str(luminanciaS);
+        valorQuadrante2 = num2str(luminanciaNE);
+        valorQuadrante3 = num2str(luminanciaNW);
+        
+        separador = 'a';
+        mensagemParaArduino = [separador valorQuadrante1 separador valorQuadrante2 separador valorQuadrante3];
+        fprintf(arduinoSerial, '%s', mensagemParaArduino); % send answer variable content to arduino
+        
+        valorDoLED1 = fscanf(arduinoSerial,'%f');
+        valorDoLED1 = uint8((255 - valorDoLED1) * 100/255);
+        valorDoLED2 = fscanf(arduinoSerial,'%f');
+        valorDoLED2 = uint8((255 - valorDoLED2) * 100/255);
+        valorDoLED3 = fscanf(arduinoSerial,'%f');
+        valorDoLED3 = uint8((255 - valorDoLED3) * 100/255);
+        stringLEDs = ['LED S: ' num2str(valorDoLED1) '% LED NE: ' num2str(valorDoLED2) '% LED NW: ' num2str(valorDoLED3) '%'];
+        
+        disp(' ');
+        disp(stringLEDs);
+        
+    end
+
+    function mensagemDeErroDeFaltaDeFotosNoCadastro
+        
+        disp('Você não cadastrou nenhuma foto ainda!');
+        disp(' ');
+        disp('Utilize a função CADASTRO antes.');
+        disp(' ');
+        
+    end
+
+    function finalizarPrograma
+        
+        close all
+        
+        fclose(fileID);
+        
+%         if isvalid(arduinoSerial)
+%             
+%             fclose(arduinoSerial);
+%             
+%             if isvalid(arduinoSerial)
+%                 fclose(arduinoSerial);
+%             end
+%         end
+        
+        disp(' ');
+        disp('Até breve!');
+        
     end
     
 end
