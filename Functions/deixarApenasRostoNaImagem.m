@@ -9,30 +9,32 @@ function [ imagemContendoApenasRosto, temRostoNaImagem ] = deixarApenasRostoNaIm
         'Area', 'Eccentricity', 'Orientation');
     
     areas = [blobMeasurements.Area];
-    %eccentricities = [blobMeasurements.Eccentricity];
+    eccentricities = [blobMeasurements.Eccentricity];
     orientations = [blobMeasurements.Orientation];
     
     idDoMaiorComFormatoDeRosto = 0;
     
     for i=1:numeroDeObjetos
         if  areas(i) >= areas(idDoMaiorComFormatoDeRosto + 1*(~idDoMaiorComFormatoDeRosto)) && ...
-                ~estaEntre(orientations(i),-65,65)
-                %eccentricities(i) < 0.92 && ...
+                ~estaEntre(orientations(i),-65,65) && ...
+                eccentricities(i) < 0.85
                 
             
             idDoMaiorComFormatoDeRosto = i;
             
-        else
-            
-            for h=1:height
+        end
+    end
+    
+    for i=1:numeroDeObjetos
+        
+        for h=1:height
                for w=1:width
-                  if imagemComLabel(h,w) == i
+                  if imagemComLabel(h,w) ~= idDoMaiorComFormatoDeRosto
                       imagemBinariaComVariosObjetos(h,w) = 0;
                   end
                end
-            end
-            
         end
+        
     end
     
     if idDoMaiorComFormatoDeRosto > 0 
