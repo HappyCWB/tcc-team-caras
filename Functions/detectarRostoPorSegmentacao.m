@@ -1,5 +1,5 @@
 
-function [ imagemCortadaEm80por60RGB, temRostoNaImagem ]...
+function [ imagemCortadaEm80por60RGB, temRostoNaImagem, BoundingBox ]...
     = detectarRostoPorSegmentacao...
     (imagemInicialDaCamera, ...
     MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS)
@@ -66,12 +66,14 @@ function [ imagemCortadaEm80por60RGB, temRostoNaImagem ]...
                     
                     temRostoNaImagem = 0;
                     imagemCortadaEm80por60RGB = imresize(imagemInicialDaCamera, [80 60]);
+                    BoundingBox = 0;
                 end
             
             else
                 
                 temRostoNaImagem = 0;
                 imagemCortadaEm80por60RGB = imresize(imagemInicialDaCamera, [80 60]);
+                BoundingBox = 0;
                 
             end
                 
@@ -79,6 +81,7 @@ function [ imagemCortadaEm80por60RGB, temRostoNaImagem ]...
             
             temRostoNaImagem = 0;
             imagemCortadaEm80por60RGB = imresize(imagemInicialDaCamera, [80 60]);
+            BoundingBox = 0;
         end
   
         
