@@ -2,8 +2,6 @@ function [idDaPessoa] = escolherPessoaDaFoto()
 %UNTITLED12 Summary of this function goes here
 %   Detailed explanation goes here
 
-    addpath ../Functions
-    
     idDaPessoa = 0;
    
     load BancoDeDados cadastro
