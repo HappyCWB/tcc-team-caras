@@ -9,11 +9,11 @@ function [ luminanciaNW ] = calcularLuminanciaNW( imagemRGB )
     totalDePixelsDaArea = 0;
     
     for i=1:height
-        for j=1:width
-            % j > width / 2 -> nao pertence!
+        for j=(width/2):width
+            % j < width / 2 -> nao pertence!
             % OU 
-            % y < a*x -> nao pertence!
-            if (j <= width/2) && (i <= (-inclinacao*j + height))
+            % y < -a*x + height -> nao pertence!
+            if (j >= width/2) && (i <= inclinacao*j)
                 somaR = somaR + uint32(imagemRGB(i,j,1));
                 somaG = somaG + uint32(imagemRGB(i,j,2));
                 somaB = somaB + uint32(imagemRGB(i,j,3));

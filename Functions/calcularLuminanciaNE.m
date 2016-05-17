@@ -9,11 +9,11 @@ function [ luminanciaNE ] = calcularLuminanciaNE( imagemRGB )
     totalDePixelsDaArea = 0;
     
     for i=1:height
-        for j=1:width
-            % j < width / 2 -> nao pertence!
+        for j=1:(width/2)
+            % j > width / 2 -> nao pertence!
             % OU 
-            % y < -a*x + height -> nao pertence!
-            if (j >= width/2) && (i <= inclinacao*j)
+            % y < a*x -> nao pertence!
+            if (j <= width/2) && (i <= (-inclinacao*j + height))
                 somaR = somaR + uint32(imagemRGB(i,j,1));
                 somaG = somaG + uint32(imagemRGB(i,j,2));
                 somaB = somaB + uint32(imagemRGB(i,j,3));

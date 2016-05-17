@@ -8,7 +8,7 @@ function [ luminanciaS ] = calcularLuminanciaS( imagemRGB )
     somaB = uint32(1);
     totalDePixelsDaArea = 0;
     
-    for i=1:height
+    for i=(height/2):height
         for j=1:width
             % y = ax + b
             % a = height / width
