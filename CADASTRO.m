@@ -26,7 +26,7 @@ function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_F
     idMaisRecente = 1;
     
     tamanhoAtual = 0;
-    arrayDasFotos = cell(1);
+    %arrayDasFotos = cell(1);
     entradaRedeNeural = zeros(1,4800);
     saidaRedeNeural = zeros(1,1);
     
@@ -162,7 +162,7 @@ function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_F
 
     function guardarNosVetoresParaRedeNeural(imagemCortada, idMaisRecente)
         
-        arrayDasFotos{tamanhoAtual} = imagemCortada;
+        %arrayDasFotos{tamanhoAtual} = imagemCortada;
         
         imagemCortadaGrayscale = rgb2gray(imagemCortada);
         entradaRedeNeural(tamanhoAtual,:) = ...
@@ -185,7 +185,7 @@ function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_F
        
         save ./Databases/BancoDeDados idMaisRecente marcarCheckbox ...
             vetorDosNumerosDeFotos entradaRedeNeural ...
-            saidaRedeNeural tamanhoAtual arrayDasFotos ...
+            saidaRedeNeural tamanhoAtual...  %arrayDasFotos ...
             cadastro;
         
     end
@@ -197,7 +197,7 @@ function [  ] = CADASTRO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_F
         if tamanhoAtual > 0
             load ./Databases/BancoDeDados idMaisRecente marcarCheckbox ...
                 vetorDosNumerosDeFotos entradaRedeNeural ...
-                saidaRedeNeural tamanhoAtual arrayDasFotos ...
+                saidaRedeNeural tamanhoAtual... %arrayDasFotos ...
                 cadastro;
         end
     end
