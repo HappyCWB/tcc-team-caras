@@ -45,11 +45,15 @@ function [ imagem ] = tirarFotoComWebcam(USAR_WEBCAM_INTEGRADA)
         end
     end
     
+    %src = getselectedsource(cam);
+    
     cam.Resolution = '640x480';
+    %cam.ReturnedColorspace = 'rgb';
+    %src.WhiteBalanceMode = 'manual';
+    %src.WhiteBalance = 4000;
+    
     
     hImage = image( zeros(480, 640, 3) );
-   
-    %setappdata(hImage, 'UpdatePreviewWindowFcn', @aoAtualizarVideoPreview);
     
     preview(cam, hImage);
     
