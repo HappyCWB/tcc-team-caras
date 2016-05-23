@@ -1,4 +1,4 @@
-function imprimirResultadosDoReconhecimento( taxaDeCerteza, idDaPessoa, temRostoNaImagem )
+function nomeEncontrado = imprimirResultadosDoReconhecimento( taxaDeCerteza, idDaPessoa, temRostoNaImagem )
 
     load BancoDeDados cadastro
     
@@ -7,37 +7,35 @@ function imprimirResultadosDoReconhecimento( taxaDeCerteza, idDaPessoa, temRosto
     
     disp(' ');
     disp(['Taxa de certeza da Rede Neural: ' taxaDeCertezaSTR '%']);
-    if idDaPessoa > 1
-        disp(['ID da pessoa: ' idDaPessoaSTR]);
-    else
-        disp(['ID da pessoa: ' idDaPessoaSTR ' (Ambiente)']);
-    end
+    %if idDaPessoa > 1
+    disp(['ID da pessoa: ' idDaPessoaSTR]);
+    %else
+    %    disp(['ID da pessoa: ' idDaPessoaSTR ' (Ambiente)']);
+    %end
     disp(' ');
     
-    if taxaDeCerteza < 0.70
+    if temRostoNaImagem
+    
+        if taxaDeCerteza < 0.70
         
-        if temRostoNaImagem
-                
             disp('Vejo um rosto, mas não sei quem é...');
             disp(' '); 
+            nomeEncontrado = '?';
         
         else
-            
-            disp(' ');
+            nomeEncontrado = char(cadastro.nomeDoID(idDaPessoa));
+
+            disp(['Olá, ' nomeEncontrado '.']);
+           
             disp(' ');
         end
         
     else
         
-    nomeEncontrado = char(cadastro.nomeDoID(idDaPessoa));
-    
-    if idDaPessoa == 1
+        disp('Procurando...');
         disp(' ');
-    else
-        disp(['Olá, ' nomeEncontrado '.']);
+        nomeEncontrado = '';
     end
-    disp(' ');
-
-    end
+    
 end
 
