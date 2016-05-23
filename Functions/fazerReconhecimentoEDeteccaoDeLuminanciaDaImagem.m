@@ -1,22 +1,31 @@
-function [idDaPessoa, temRostoNaImagem, luminanciaS, luminanciaNE, luminanciaNW, BoundingBox] = ...
+function [idDaPessoa, temRostoNaImagem, luminanciaS, luminanciaNE, luminanciaNW, BoundingBox, nomeEncontrado] = ...
     fazerReconhecimentoEDeteccaoDeLuminanciaDaImagem (imagemInicialDaCamera, ...
-        MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS)
+        USAR_VIOLA_JONES)
     
-    [imagemCortada, temRostoNaImagem, BoundingBox] = ...
-        detectarRostoPorSegmentacao(imagemInicialDaCamera, ...
-        MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS);
+    switch nargin
+        case 1
+            USAR_VIOLA_JONES = 0;
+    end
+    
+    if USAR_VIOLA_JONES
+        [imagemCortada, temRostoNaImagem, BoundingBox] = ...
+            detectarRostoPorViolaJones(imagemInicialDaCamera);
+    else
+        [imagemCortada, temRostoNaImagem, BoundingBox] = ...
+            detectarRostoPorSegmentacao(imagemInicialDaCamera);
+    end
 
     imagemCortadaGray = rgb2gray(imagemCortada);
 
     [taxaDeCerteza, idDaPessoa] = ...
         reconhecerQuemEstaNaImagem(imagemCortadaGray);
 
-    imprimirResultadosDoReconhecimento(taxaDeCerteza, idDaPessoa, temRostoNaImagem);
+    nomeEncontrado = imprimirResultadosDoReconhecimento(taxaDeCerteza, idDaPessoa, temRostoNaImagem);
 
-    if temRostoNaImagem && idDaPessoa ~= 1
+    if temRostoNaImagem
 
         [luminanciaS, luminanciaNE, luminanciaNW] = ...
-            detectarLuminanciaDasTresDivisoesDoRosto(imagemCortada, MOSTRAR_RESULTADOS_FINAIS);
+            detectarLuminanciaDasTresDivisoesDoRosto(imagemCortada, 0);
 
         imprimirLuminancias(luminanciaS, luminanciaNE, luminanciaNW);
     else
