@@ -7,7 +7,7 @@
 %
 % Data: 09/05/2016
 
-function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
+function [  ] = RECONHECIMENTO(USAR_VIOLA_JONES, USAR_CONTROLE_PID, USAR_WEBCAM_INTEGRADA)
 
     addpath ./Functions
     addpath ./Classes
@@ -17,7 +17,9 @@ function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
     
     limparTelaEVariaveis;
     
-    %arduinoSerial = inicializarArduino;
+    if USAR_CONTROLE_PID
+        arduinoSerial = inicializarArduino;
+    end
 
     load ./Databases/BancoDeDados tamanhoAtual
     
@@ -36,6 +38,8 @@ function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
 
         fileID = fopen('Resultados.txt','w');
         
+        contagem = 0;
+        
         while sair == 0
 
             if(isvalid(handleDaTela))
@@ -43,19 +47,31 @@ function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
                 imagemInicialDaCamera = snapshot(camera);
                 hold on
 
-                [idDaPessoa, temRostoNaImagem, luminanciaS, luminanciaNE, luminanciaNW, BoundingBox] = ...
+                [idDaPessoa, temRostoNaImagem, luminanciaS, luminanciaNE, luminanciaNW, BoundingBox, nomeEncontrado] = ...
                     fazerReconhecimentoEDeteccaoDeLuminanciaDaImagem(imagemInicialDaCamera, ...
-                        MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS);
-
+                        USAR_VIOLA_JONES);
+                
+                %insertText(imagemInicialDaCamera,BoundingBox(1,1:2),nomeEncontrado,'FontSize',18,'BoxColor','Red','BoxOpacity',0.4,'TextColor','white');
+                    
                 colocarBoundingBoxNoRosto;
                 
-%                 if isvalid(arduinoSerial)
-%                     if (temRostoNaImagem && luminanciaS > 0 && luminanciaNE > 0 && luminanciaNW > 0)
-%                         enviarMensagemParaArduino;
-%                     end
-%                 end
+                if USAR_CONTROLE_PID
+                    
+                      enviarMensagemParaArduino;
+                end
                               
-                fprintf(fileID, '%d\n', idDaPessoa);
+                if temRostoNaImagem
+                    fprintf(fileID, '%d\n', idDaPessoa);
+                else
+                    fprintf(fileID, '%d\n', 0);
+                end
+                
+%                 contagem = contagem + 1
+%                 
+%                 if contagem == 100
+%                     sair = 1;
+%                     delete(handleDaTela);
+%                 end
             end
         end
     
@@ -77,11 +93,11 @@ function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
         
         switch nargin
             case 0
-                MOSTRAR_RESULTADOS_INTERMEDIARIOS = 0;
-                MOSTRAR_RESULTADOS_FINAIS = 0;
+                USAR_VIOLA_JONES = 0;
+                USAR_CONTROLE_PID = 1;
                 USAR_WEBCAM_INTEGRADA = 0;
             case 1
-                MOSTRAR_RESULTADOS_FINAIS = 1;
+                USAR_CONTROLE_PID = 1;
                 USAR_WEBCAM_INTEGRADA = 0;
             case 2
                 USAR_WEBCAM_INTEGRADA = 0;
@@ -92,7 +108,7 @@ function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
     function limparTelaEVariaveis
         
         clc
-        clearvars -except MOSTRAR_RESULTADOS_INTERMEDIARIOS MOSTRAR_RESULTADOS_FINAIS USAR_WEBCAM_INTEGRADA
+        clearvars -except USAR_VIOLA_JONES USAR_CONTROLE_PID USAR_WEBCAM_INTEGRADA
         close all
     end
 
@@ -133,9 +149,11 @@ function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
         valorQuadrante1 = num2str(luminanciaS);
         valorQuadrante2 = num2str(luminanciaNE);
         valorQuadrante3 = num2str(luminanciaNW);
+        temRostoString = num2str(temRostoNaImagem);
         
         separador = 'a';
-        mensagemParaArduino = [separador valorQuadrante1 separador valorQuadrante2 separador valorQuadrante3];
+        mensagemParaArduino = [separador valorQuadrante1 separador valorQuadrante2 ...
+            separador valorQuadrante3 separador temRostoString];
         fprintf(arduinoSerial, '%s', mensagemParaArduino); % send answer variable content to arduino
         
         valorDoLED1 = fscanf(arduinoSerial,'%f');
@@ -148,6 +166,8 @@ function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
         
         disp(' ');
         disp(stringLEDs);
+        
+        pause(0.2);
         
     end
 
@@ -166,14 +186,17 @@ function [  ] = RECONHECIMENTO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULT
         
         fclose(fileID);
         
-%         if isvalid(arduinoSerial)
-%             
-%             fclose(arduinoSerial);
-%             
-%             if isvalid(arduinoSerial)
-%                 fclose(arduinoSerial);
-%             end
-%         end
+        if USAR_CONTROLE_PID
+            
+             if isvalid(arduinoSerial)
+
+                 fclose(arduinoSerial);
+
+                 if isvalid(arduinoSerial)
+                     fclose(arduinoSerial);
+                 end
+             end
+        end
         
         disp(' ');
         disp('Até breve!');
