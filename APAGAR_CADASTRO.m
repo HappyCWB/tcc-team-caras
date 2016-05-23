@@ -7,7 +7,7 @@
 %
 % Data: 09/05/2016
 
-function RESETAR_CADASTRO
+function APAGAR_CADASTRO
 
     clearvars
     
