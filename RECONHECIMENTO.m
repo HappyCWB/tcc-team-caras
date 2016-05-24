@@ -94,10 +94,10 @@ function [  ] = RECONHECIMENTO(USAR_VIOLA_JONES, USAR_CONTROLE_PID, USAR_WEBCAM_
         switch nargin
             case 0
                 USAR_VIOLA_JONES = 0;
-                USAR_CONTROLE_PID = 1;
+                USAR_CONTROLE_PID = 0;
                 USAR_WEBCAM_INTEGRADA = 0;
             case 1
-                USAR_CONTROLE_PID = 1;
+                USAR_CONTROLE_PID = 0;
                 USAR_WEBCAM_INTEGRADA = 0;
             case 2
                 USAR_WEBCAM_INTEGRADA = 0;
