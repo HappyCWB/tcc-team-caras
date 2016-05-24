@@ -53,7 +53,7 @@ function [  ] = RECONHECIMENTO(USAR_VIOLA_JONES, USAR_CONTROLE_PID, USAR_WEBCAM_
                 
                 %insertText(imagemInicialDaCamera,BoundingBox(1,1:2),nomeEncontrado,'FontSize',18,'BoxColor','Red','BoxOpacity',0.4,'TextColor','white');
                     
-                colocarBoundingBoxNoRosto;
+                colocarBoundingBoxENomeNoRosto(idDaPessoa);
                 
                 if USAR_CONTROLE_PID
                     
@@ -112,18 +112,52 @@ function [  ] = RECONHECIMENTO(USAR_VIOLA_JONES, USAR_CONTROLE_PID, USAR_WEBCAM_
         close all
     end
 
-    function colocarBoundingBoxNoRosto
+    function colocarBoundingBoxENomeNoRosto(idDaPessoa)
+        
+        cores = ['r' 'g' 'b' 'y' 'm' 'c' 'k' 'w'];
         
         if (BoundingBox ~= 0)
-            rect = rectangle('Position',BoundingBox,'LineWidth',5,'LineStyle','-','EdgeColor','r');
+            
+            if nomeEncontrado == '?'
+                rect = rectangle('Position',BoundingBox,'LineWidth',5,'LineStyle','-','EdgeColor','w');
+                textoNome = text(BoundingBox(1), BoundingBox(2)-20, ['\bf' nomeEncontrado], ...
+                'Color', 'w', 'FontSize', 12);
+                textoLumNE = text(BoundingBox(1)-45, BoundingBox(2)+20, [num2str(luminanciaNE)], ...
+                'Color', 'w', 'FontSize', 12);
+                textoLumNW = text(BoundingBox(1)+BoundingBox(3)+20, BoundingBox(2)+20, [num2str(luminanciaNW)], ...
+                'Color', 'w', 'FontSize', 12);
+                textoLumS = text(BoundingBox(1)+(BoundingBox(3))/2-10, BoundingBox(2)+BoundingBox(4)+20, [num2str(luminanciaS)], ...
+                'Color', 'w', 'FontSize', 12);  
+            else
+                rect = rectangle('Position',BoundingBox,'LineWidth',5,'LineStyle','-','EdgeColor',cores(idDaPessoa));
+                textoNome = text(BoundingBox(1), BoundingBox(2)-20, ['\bf' nomeEncontrado], ...
+                'Color', cores(idDaPessoa), 'FontSize', 12);
+                textoLumNE = text(BoundingBox(1)-45, BoundingBox(2)+20, [num2str(luminanciaNE)], ...
+                'Color', cores(idDaPessoa), 'FontSize', 12);
+                textoLumNW = text(BoundingBox(1)+BoundingBox(3)+20, BoundingBox(2)+20, [num2str(luminanciaNW)], ...
+                'Color', cores(idDaPessoa), 'FontSize', 12);
+                textoLumS = text(BoundingBox(1)+(BoundingBox(3))/2-10, BoundingBox(2)+BoundingBox(4)+20, [num2str(luminanciaS)], ...
+                'Color', cores(idDaPessoa), 'FontSize', 12); 
+            end
 
+            
+            
                 set(rect,'Visible','on')
+                
+                set(textoNome,'Visible','on')
+                set(textoLumS,'Visible','on')
+                set(textoLumNE,'Visible','on')
+                set(textoLumNW,'Visible','on')
 
                 pause(0.02);
 
             if (isvalid(rect))
 
                 set(rect,'Visible','off')
+                set(textoNome,'Visible','off')
+                set(textoLumS,'Visible','off')
+                set(textoLumNE,'Visible','off')
+                set(textoLumNW,'Visible','off')
             end
 
         end
