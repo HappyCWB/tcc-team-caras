@@ -22,13 +22,18 @@ function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
     
     if tamanhoAtual > 0
     
+        if MOSTRAR_RESULTADOS_FINAIS
+            
+            tic
+        end
+        
         load ./Databases/BancoDeDados entradaRedeNeural saidaRedeNeural
 
         erroDoTreinamento = 1;
         numeroDeTreinamentos = 0;
 
         while (erroDoTreinamento > 0.01 && numeroDeTreinamentos < 5)
-            net = patternnet(50);
+            net = patternnet(100);
             net.trainParam.showWindow = false;
             net = train(net,entradaRedeNeural',saidaRedeNeural');
 
@@ -36,7 +41,7 @@ function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
             erroDoTreinamento = perform(net,saidaRedeNeural',resultados);
             %classes = vec2ind(y);
 
-            numeroDeTreinamentos = numeroDeTreinamentos + 1;
+            numeroDeTreinamentos = numeroDeTreinamentos + 1
         end
 
         if (MOSTRAR_RESULTADOS_FINAIS)
@@ -51,6 +56,11 @@ function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
 
         disp(' ');
         disp('Rede Neural treinada com sucesso!');
+        
+        if MOSTRAR_RESULTADOS_FINAIS
+           
+            toc
+        end
         
     else
         disp(' ');
