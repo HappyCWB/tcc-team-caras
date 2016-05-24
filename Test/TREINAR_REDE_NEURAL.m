@@ -11,14 +11,14 @@ function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
 
     ajustarParametrosOpcionais(nargin)
     
-    addpath ./Functions
-    addpath ./Classes
-    addpath ./Databases
+    addpath ../Functions
+    addpath ../Classes
+    addpath ../Databases
     
     clearvars -except MOSTRAR_RESULTADOS_FINAIS
     close all
     
-    load ./Databases/BancoDeDados tamanhoAtual
+    load ../Databases/BancoDeDados tamanhoAtual
     
     if tamanhoAtual > 0
     
@@ -27,7 +27,7 @@ function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
             tic
         end
         
-        load ./Databases/BancoDeDados entradaRedeNeural saidaRedeNeural
+        load ../Databases/BancoDeDados entradaRedeNeural saidaRedeNeural
 
         erroDoTreinamento = 1;
         numeroDeTreinamentos = 0;
@@ -52,7 +52,7 @@ function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
             disp(numeroDeTreinamentos);
         end
 
-        save ./Databases/BDRedeNeural net;
+        save ../Databases/BDRedeNeural net;
 
         disp(' ');
         disp('Rede Neural treinada com sucesso!');
