@@ -7,28 +7,33 @@
 %
 % Data: 09/05/2016
 
-function [  ] = RECONHECIMENTO_UNITARIO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
+function [  ] = TESTE_RECONHECIMENTO(USAR_VIOLA_JONES, MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS, USAR_WEBCAM_INTEGRADA)
 
-    addpath ./Functions
-    addpath ./Classes
-    addpath ./Databases
+    addpath ../Functions
+    addpath ../Classes
+    addpath ../Databases
 
     ajustarParametrosOpcionais(nargin);
     
     clc
-    clearvars -except MOSTRAR_RESULTADOS_INTERMEDIARIOS MOSTRAR_RESULTADOS_FINAIS USAR_WEBCAM_INTEGRADA
+    clearvars -except USAR_VIOLA_JONES MOSTRAR_RESULTADOS_INTERMEDIARIOS MOSTRAR_RESULTADOS_FINAIS USAR_WEBCAM_INTEGRADA
     close all
     
-    load ./Databases/BancoDeDados tamanhoAtual
+    load ../Databases/BancoDeDados tamanhoAtual
     
     if tamanhoAtual > 0
     
         [imagemInicialDaCamera] = tirarFotoComWebcam(USAR_WEBCAM_INTEGRADA);
 
-        [imagemCortada, temRostoNaImagem, ~] = detectarRostoPorSegmentacao...
-                (imagemInicialDaCamera, ...
-                MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS);
-
+        if USAR_VIOLA_JONES
+            [imagemCortada, temRostoNaImagem, ~] = detectarRostoPorViolaJones...
+            (imagemInicialDaCamera);
+        else
+            [imagemCortada, temRostoNaImagem, ~] = detectarRostoPorSegmentacao...
+            (imagemInicialDaCamera, ...
+            MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTRAR_RESULTADOS_FINAIS);
+        end
+        
         imagemCortadaGray = rgb2gray(imagemCortada);
 
         [taxaDeCerteza, idDaPessoa] = ...
@@ -56,13 +61,18 @@ function [  ] = RECONHECIMENTO_UNITARIO(MOSTRAR_RESULTADOS_INTERMEDIARIOS, MOSTR
         
         switch nargin
             case 0
-                MOSTRAR_RESULTADOS_INTERMEDIARIOS = 0;
-                MOSTRAR_RESULTADOS_FINAIS = 0;
+                USAR_VIOLA_JONES = 0;
+                MOSTRAR_RESULTADOS_INTERMEDIARIOS = 1;
+                MOSTRAR_RESULTADOS_FINAIS = 1;
                 USAR_WEBCAM_INTEGRADA = 0;
             case 1
+                MOSTRAR_RESULTADOS_INTERMEDIARIOS = 1;
                 MOSTRAR_RESULTADOS_FINAIS = 1;
                 USAR_WEBCAM_INTEGRADA = 0;
             case 2
+                MOSTRAR_RESULTADOS_FINAIS = 0;
+                USAR_WEBCAM_INTEGRADA = 0;
+            case 3
                 USAR_WEBCAM_INTEGRADA = 0;
         end
         
