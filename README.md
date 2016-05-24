@@ -5,6 +5,7 @@ Desenvolvimento de um Sistema de Reconhecimento Facial com Controle de Iluminaç
 
 * ***Entrega:***  06/2016
 
+----------
 
 #O SISTEMA
 
@@ -49,14 +50,15 @@ Basta abrir a pasta "Testes" para poder utilizá-los.
 
 ***IV -*** Utilize a função **TREINAR_REDE_NEURAL** se desejar treinar novamente a rede e verificar os dados do treinamento.
 
+----------------
 
 ###O sistema completo:
 
 ![Imgur](http://i.imgur.com/8xBDrHi.png "Sistema completo")
 
+------------
 
-OBSERVAÇÃO GERAL
-===============
+###OBSERVAÇÃO GERAL
 
 Todos as mensagens de commit estão em inglês, simplesmente para não perder a prática :)
 
