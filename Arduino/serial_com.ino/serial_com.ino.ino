@@ -4,9 +4,9 @@
       Pré-programa TCC
  */
 #include <PID_v1.h> 
-double Setpoint1, Input1, Output1, Kp1 = 4, Ki1 = 6, Kd1 = 0, Setpoint = 42;
-double Setpoint2, Input2, Output2, Kp2 = 4, Ki2 = 6, Kd2 = 0;
-double Setpoint3, Input3, Output3, Kp3 = 4, Ki3 = 6, Kd3 = 0;
+double Setpoint1, Input1, Output1, Kp1 = 6, Ki1 = 8, Kd1 = 0, Setpoint = 42;
+double Setpoint2, Input2, Output2, Kp2 = 6, Ki2 = 8, Kd2 = 0;
+double Setpoint3, Input3, Output3, Kp3 = 6, Ki3 = 8, Kd3 = 0;
 
 int led1 = 9, led2 = 10, led3 = 11, semRosto = 1, jaLeu = 0;          // 9 é o SU, 10 é o NE, 11 é o NW
 long int bug, x, y ,z;
@@ -65,9 +65,9 @@ void loop()
               contagemDeNaoRosto = 0;
             }
 
-            Serial.println(180);
-            Serial.println(180);
-            Serial.println(180);
+            //Serial.println(180);
+            //Serial.println(180);
+            //Serial.println(180);
             
       } else{
 
@@ -84,14 +84,17 @@ void loop()
             Output1 = 255 - Output1;
             Output2 = 255 - Output2;
             Output3 = 255 - Output3;
+
+            if(Output2 >= 240) Output2 = 240;
+            if(Output3 >= 240) Output3 = 240;
             
             analogWrite(led1,Output1);
             analogWrite(led2,Output2);
             analogWrite(led3,Output3);
             
-            Serial.println(Output1);
-            Serial.println(Output2);
-            Serial.println(Output3);
+            //Serial.println(Output1);
+            //Serial.println(Output2);
+            //Serial.println(Output3);
        }
       }
 }
