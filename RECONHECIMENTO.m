@@ -36,7 +36,16 @@ function [  ] = RECONHECIMENTO(USAR_VIOLA_JONES, USAR_CONTROLE_PID, USAR_WEBCAM_
                 'Callback', @(src, evnt)acaoBotaoSair() ...
             );
 
-        fileID = fopen('Resultados.txt','w');
+        fileID_nomes = fopen('Nomes.txt','w');
+        fileID_luminanciaS = fopen('LuminanciaS.txt','w');
+        fileID_luminanciaNE = fopen('LuminanciaNE.txt','w');
+        fileID_luminanciaNW = fopen('LuminanciaNW.txt','w');
+        
+        rect = rectangle('Position',[0 0 0 0]);
+        textoNome = text(0, 0, '');
+        textoLumS = text(0, 0, '');
+        textoLumNE = text(0, 0, '');
+        textoLumNW = text(0, 0, '');
         
         contagem = 0;
         
@@ -45,14 +54,11 @@ function [  ] = RECONHECIMENTO(USAR_VIOLA_JONES, USAR_CONTROLE_PID, USAR_WEBCAM_
             if(isvalid(handleDaTela))
                
                 imagemInicialDaCamera = snapshot(camera);
-                hold on
 
                 [idDaPessoa, temRostoNaImagem, luminanciaS, luminanciaNE, luminanciaNW, BoundingBox, nomeEncontrado] = ...
                     fazerReconhecimentoEDeteccaoDeLuminanciaDaImagem(imagemInicialDaCamera, ...
                         USAR_VIOLA_JONES);
                 
-                %insertText(imagemInicialDaCamera,BoundingBox(1,1:2),nomeEncontrado,'FontSize',18,'BoxColor','Red','BoxOpacity',0.4,'TextColor','white');
-                    
                 colocarBoundingBoxENomeNoRosto(idDaPessoa);
                 
                 if USAR_CONTROLE_PID
@@ -61,17 +67,50 @@ function [  ] = RECONHECIMENTO(USAR_VIOLA_JONES, USAR_CONTROLE_PID, USAR_WEBCAM_
                 end
                               
                 if temRostoNaImagem
-                    fprintf(fileID, '%d\n', idDaPessoa);
+                    if nomeEncontrado == '?'
+                        fprintf(fileID_nomes, '%d\n', -1);
+                    else
+                        fprintf(fileID_nomes, '%d\n', idDaPessoa);
+                    end
+                    fprintf(fileID_luminanciaS, '%d\n', luminanciaS);
+                    fprintf(fileID_luminanciaNE, '%d\n', luminanciaNE);
+                    fprintf(fileID_luminanciaNW, '%d\n', luminanciaNW);
                 else
-                    fprintf(fileID, '%d\n', 0);
+                    fprintf(fileID_nomes, '%d\n', 0);
+                    fprintf(fileID_luminanciaS, '%d\n', ' ');
+                    fprintf(fileID_luminanciaNE, '%d\n', ' ');
+                    fprintf(fileID_luminanciaNW, '%d\n', ' ');
                 end
                 
-%                 contagem = contagem + 1
-%                 
-%                 if contagem == 100
-%                     sair = 1;
-%                     delete(handleDaTela);
-%                 end
+                figureS = figure(2);
+                gerarGraficoAPartirDoArquivo('LuminanciaS', 'b', 38);
+                figureS.Position = [550, 45, 310, 110];
+                figureS.Name = 'Luminância S';
+                %movegui('south');
+                
+                figureNE = figure(3);
+                gerarGraficoAPartirDoArquivo('LuminanciaNE', 'b', 42);
+                figureNE.Position = [95, 380, 310, 150];
+                figureNE.Name = 'Luminância NE';
+                %movegui('northeast');
+                
+                figureNW = figure(4);
+                gerarGraficoAPartirDoArquivo('LuminanciaNW', 'b', 42);
+                figureNW.Position = [970, 380, 310, 150];
+                figureNW.Name = 'Luminância NW';
+                %movegui('northwest');
+                
+                
+                 contagem = contagem + 1
+                 
+                 if contagem == 50 || contagem == 100
+                     pause(5)
+                 end
+                 
+                 if contagem == 150
+                     sair = 1;
+                     delete(handleDaTela);
+                 end
             end
         end
     
@@ -114,7 +153,21 @@ function [  ] = RECONHECIMENTO(USAR_VIOLA_JONES, USAR_CONTROLE_PID, USAR_WEBCAM_
 
     function colocarBoundingBoxENomeNoRosto(idDaPessoa)
         
+        if(isvalid(handleDaTela))
+            figure(handleDaTela)
+            hold on
+        end
+        
         cores = ['r' 'g' 'b' 'y' 'm' 'c' 'k' 'w'];
+        
+        if (isvalid(rect))
+
+                set(rect,'Visible','off')
+                set(textoNome,'Visible','off')
+                set(textoLumS,'Visible','off')
+                set(textoLumNE,'Visible','off')
+                set(textoLumNW,'Visible','off')
+            end
         
         if (BoundingBox ~= 0)
             
@@ -140,26 +193,11 @@ function [  ] = RECONHECIMENTO(USAR_VIOLA_JONES, USAR_CONTROLE_PID, USAR_WEBCAM_
                 'Color', cores(idDaPessoa), 'FontSize', 12); 
             end
 
-            
-            
                 set(rect,'Visible','on')
-                
                 set(textoNome,'Visible','on')
                 set(textoLumS,'Visible','on')
                 set(textoLumNE,'Visible','on')
                 set(textoLumNW,'Visible','on')
-
-                pause(0.02);
-
-            if (isvalid(rect))
-
-                set(rect,'Visible','off')
-                set(textoNome,'Visible','off')
-                set(textoLumS,'Visible','off')
-                set(textoLumNE,'Visible','off')
-                set(textoLumNW,'Visible','off')
-            end
-
         end
         
     end
@@ -190,18 +228,18 @@ function [  ] = RECONHECIMENTO(USAR_VIOLA_JONES, USAR_CONTROLE_PID, USAR_WEBCAM_
             separador valorQuadrante3 separador temRostoString];
         fprintf(arduinoSerial, '%s', mensagemParaArduino); % send answer variable content to arduino
         
-        valorDoLED1 = fscanf(arduinoSerial,'%f');
-        valorDoLED1 = uint8((255 - valorDoLED1) * 100/255);
-        valorDoLED2 = fscanf(arduinoSerial,'%f');
-        valorDoLED2 = uint8((255 - valorDoLED2) * 100/255);
-        valorDoLED3 = fscanf(arduinoSerial,'%f');
-        valorDoLED3 = uint8((255 - valorDoLED3) * 100/255);
-        stringLEDs = ['LED S: ' num2str(valorDoLED1) '% LED NE: ' num2str(valorDoLED2) '% LED NW: ' num2str(valorDoLED3) '%'];
+%         valorDoLED1 = fscanf(arduinoSerial,'%f');
+%         valorDoLED1 = uint8((255 - valorDoLED1) * 100/255);
+%         valorDoLED2 = fscanf(arduinoSerial,'%f');
+%         valorDoLED2 = uint8((255 - valorDoLED2) * 100/255);
+%         valorDoLED3 = fscanf(arduinoSerial,'%f');
+%         valorDoLED3 = uint8((255 - valorDoLED3) * 100/255);
+%         stringLEDs = ['LED S: ' num2str(valorDoLED1) '% LED NE: ' num2str(valorDoLED2) '% LED NW: ' num2str(valorDoLED3) '%'];
+%         
+%         disp(' ');
+%         disp(stringLEDs);
         
-        disp(' ');
-        disp(stringLEDs);
-        
-        pause(0.2);
+        pause(0.1);
         
     end
 
@@ -218,7 +256,7 @@ function [  ] = RECONHECIMENTO(USAR_VIOLA_JONES, USAR_CONTROLE_PID, USAR_WEBCAM_
         
         close all
         
-        fclose(fileID);
+        fclose(fileID_nomes);
         
         if USAR_CONTROLE_PID
             
