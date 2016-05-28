@@ -103,9 +103,9 @@ function [  ] = CADASTRO(USAR_VIOLA_JONES, MOSTRAR_RESULTADOS_INTERMEDIARIOS, MO
 
         if get(checkboxPessoaAnterior, 'Value') == 0
             
-            save .Databases/BancoDeDados cadastro
+            save BancoDeDados cadastro
             idDaPessoa = escolherPessoaDaFoto();
-            load .DatabasesBancoDeDados cadastro
+            load BancoDeDados cadastro
 
             idMaisRecente = idDaPessoa;
             marcarCheckbox = 1;
@@ -212,7 +212,7 @@ function [  ] = CADASTRO(USAR_VIOLA_JONES, MOSTRAR_RESULTADOS_INTERMEDIARIOS, MO
         
         if tamanhoAtual > 0
             disp('Treinando Rede Neural...');
-            treinarRedeNeural(MOSTRAR_RESULTADOS_FINAIS);
+            TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS);
         end
         
         disp(' ');
