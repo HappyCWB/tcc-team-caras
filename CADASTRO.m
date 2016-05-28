@@ -212,7 +212,7 @@ function [  ] = CADASTRO(USAR_VIOLA_JONES, MOSTRAR_RESULTADOS_INTERMEDIARIOS, MO
         
         if tamanhoAtual > 0
             disp('Treinando Rede Neural...');
-            TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS);
+            treinarRedeNeural(MOSTRAR_RESULTADOS_FINAIS);
         end
         
         disp(' ');
