@@ -54,6 +54,8 @@ function [  ] = RECONHECIMENTO(USAR_VIOLA_JONES, USAR_CONTROLE_PID, USAR_WEBCAM_
             if(isvalid(handleDaTela))
                
                 imagemInicialDaCamera = snapshot(camera);
+                figure(handleDaTela);
+                imshow(imagemInicialDaCamera);
 
                 [idDaPessoa, temRostoNaImagem, luminanciaS, luminanciaNE, luminanciaNW, BoundingBox, nomeEncontrado] = ...
                     fazerReconhecimentoEDeteccaoDeLuminanciaDaImagem(imagemInicialDaCamera, ...
@@ -198,6 +200,11 @@ function [  ] = RECONHECIMENTO(USAR_VIOLA_JONES, USAR_CONTROLE_PID, USAR_WEBCAM_
                 set(textoLumS,'Visible','on')
                 set(textoLumNE,'Visible','on')
                 set(textoLumNW,'Visible','on')
+        end
+        
+       if(isvalid(handleDaTela))
+            figure(handleDaTela)
+            hold off
         end
         
     end
