@@ -7,7 +7,7 @@
 %
 % Data: 09/05/2016
 
-function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
+function [erroDoTreinamento, numeroDeTreinamentos, tempoTotal] = TREINAR_REDE_NEURAL(numeroDeNeuroniosEscondidos, MOSTRAR_RESULTADOS_FINAIS)
 
     ajustarParametrosOpcionais(nargin)
     
@@ -15,7 +15,7 @@ function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
     addpath ../Classes
     addpath ../Databases
     
-    clearvars -except MOSTRAR_RESULTADOS_FINAIS
+    clearvars -except numeroDeNeuroniosEscondidos MOSTRAR_RESULTADOS_FINAIS
     close all
     
     load ../Databases/BancoDeDados tamanhoAtual
@@ -33,7 +33,7 @@ function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
         numeroDeTreinamentos = 0;
 
         while (erroDoTreinamento > 0.01 && numeroDeTreinamentos < 5)
-            net = patternnet(100);
+            net = patternnet(numeroDeNeuroniosEscondidos);
             net.trainParam.showWindow = false;
             net = train(net,entradaRedeNeural',saidaRedeNeural');
 
@@ -48,10 +48,8 @@ function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
 
         if (MOSTRAR_RESULTADOS_FINAIS)
             disp(' ');
-            disp('Erro quadrático médio (MSE) do treinamento = ');
-            disp(erroDoTreinamento);
-            disp('Número de vezes que a rede foi treinada para chegar no resultado ótimo = ');
-            disp(numeroDeTreinamentos);
+            disp(['Erro quadrático médio (MSE) do treinamento = ' num2str(erroDoTreinamento)]);
+            disp(['Número de vezes que a rede foi treinada para chegar no resultado ótimo = ' num2str(numeroDeTreinamentos)]);
         end
 
         save ../Databases/BDRedeNeural net;
@@ -61,7 +59,8 @@ function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
         
         if MOSTRAR_RESULTADOS_FINAIS
            
-            toc
+            tempoTotal = toc;
+            disp(['Tempo total = ' num2str(tempoTotal)]);
         end
         
     else
@@ -78,7 +77,11 @@ function [ ] = TREINAR_REDE_NEURAL(MOSTRAR_RESULTADOS_FINAIS)
         switch nargin
     
             case 0
-                MOSTRAR_RESULTADOS_FINAIS = 0;
+                numeroDeNeuroniosEscondidos = 150;
+                MOSTRAR_RESULTADOS_FINAIS = 1;
+                
+            case 1
+                MOSTRAR_RESULTADOS_FINAIS = 1;
         end
     end
 
