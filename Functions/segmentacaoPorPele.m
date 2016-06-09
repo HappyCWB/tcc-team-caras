@@ -14,8 +14,8 @@ function [ output ] = segmentacaoPorPele( imagemInicialEmRGB )
             %if  133<=cr(i,j) && cr(i,j)<=173 && 77<=cb(i,j) && cb(i,j)<=195 && 0.019<=hue(i,j) && hue(i,j)<=0.240  
             %if  133<=c, r(i,j) && cr(i,j)<=173 && 77<=cb(i,j) && cb(i,j)<=127 && 0.01<=hue(i,j) && hue(i,j)<=0.1  
             %if and( and(0.019 <= hue(i,j), hue(i,j) <= 0.240), and(0.23 <= saturation(i,j), saturation(i,j) <= 0.85))
-            if  estaEntre(hue(i,j), 0.00, 0.240) && ...
-                estaEntre(saturation(i,j), 0.10, 0.85) 
+            if  estaEntre(hue(i,j), 0.65, 0.99) && ...
+                estaEntre(saturation(i,j), 0.21, 0.43) 
                
                 imagemPele(i,j) = 1;            
             else       
