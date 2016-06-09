@@ -1,4 +1,5 @@
-function [ imagemContendoApenasRosto, temRostoNaImagem ] = deixarApenasRostoNaImagem( imagemBinariaComVariosObjetos )
+function [ imagemContendoApenasRosto, temRostoNaImagem ] = ...
+    deixarApenasRostoNaImagem( imagemBinariaComVariosObjetos, MOSTRAR_RESULTADOS_INTERMEDIARIOS )
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -7,6 +8,8 @@ function [ imagemContendoApenasRosto, temRostoNaImagem ] = deixarApenasRostoNaIm
     [imagemComLabel, numeroDeObjetos] = bwlabel(imagemBinariaComVariosObjetos, 8);
     blobMeasurements = regionprops(imagemComLabel, imagemBinariaComVariosObjetos, ...
         'Area', 'Eccentricity', 'Orientation');
+    
+    
     
     areas = [blobMeasurements.Area];
     eccentricities = [blobMeasurements.Eccentricity];
@@ -51,6 +54,18 @@ function [ imagemContendoApenasRosto, temRostoNaImagem ] = deixarApenasRostoNaIm
     else
         temRostoNaImagem = 0;
         imagemContendoApenasRosto = 0;
+    end
+    
+    if MOSTRAR_RESULTADOS_INTERMEDIARIOS
+        figure
+       
+        subplot(1,2,1)
+        imshow(label2rgb(imagemComLabel, 'hsv', 'k', 'shuffle'))
+        title('Blocos de pixels encontrados')
+        
+        subplot(1,2,2)
+        imshow(label2rgb(imagemContendoApenasRosto, 'hsv', 'k', 'shuffle'))
+        title('Apenas rosto')
     end
     
 end
