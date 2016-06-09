@@ -3,19 +3,19 @@ function [ imagemPosTratamentos ] = sequenciaDeTratamentosDeImagem( imagemPreTra
     imagemPosPreenchimento0 = preencherBuracosDaImagem(imagemPreTratamentos);
 
     [imagemPosPreenchimento1, imagemPosErosao1, imagemPosDilatacao1] = ...
-           removerRuidosComQuadradoVariavel(imagemPosPreenchimento0, 5);
+           removerRuidosComQuadradoVariavel(imagemPreTratamentos, 1);
 
     [imagemPosPreenchimento2, imagemPosErosao2, imagemPosDilatacao2] = ...
-           removerRuidosComQuadradoVariavel(imagemPosPreenchimento1, 7);
+           removerRuidosComQuadradoVariavel(imagemPosPreenchimento1, 2);
     
     [imagemPosTratamentos, imagemPosErosao3, imagemPosDilatacao3] = ...
-           removerRuidosComQuadradoVariavel(imagemPosPreenchimento2, 9);
+           removerRuidosComQuadradoVariavel(imagemPosPreenchimento2, 4);
     
     if(mostrarResultadosIntermediarios==1)
 
         figure('Name', 'Resultados Intermediários');
 
-        suptitle('RESULTADOS INTERMEDIÁRIOS')
+        %suptitle('RESULTADOS INTERMEDIÁRIOS')
 
         subplot(4,3,2)
         imshow(imagemPreTratamentos);
@@ -31,7 +31,7 @@ function [ imagemPosTratamentos ] = sequenciaDeTratamentosDeImagem( imagemPreTra
 
         subplot(4,3,6)
         imshow(imagemPosPreenchimento1)
-        title('Preenchida 1')
+        title('Preenchimento 1')
 
         subplot(4,3,7)
         imshow(imagemPosErosao2)
@@ -43,7 +43,7 @@ function [ imagemPosTratamentos ] = sequenciaDeTratamentosDeImagem( imagemPreTra
 
         subplot(4,3,9)
         imshow(imagemPosPreenchimento2)
-        title('Preenchida 2')
+        title('Preenchimento 2')
         
         subplot(4,3,10)
         imshow(imagemPosErosao3)
@@ -55,7 +55,7 @@ function [ imagemPosTratamentos ] = sequenciaDeTratamentosDeImagem( imagemPreTra
 
         subplot(4,3,12)
         imshow(imagemPosTratamentos)
-        title('Preenchida 3')
+        title('Preenchimento 3')
 
     end
 
