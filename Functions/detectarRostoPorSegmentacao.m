@@ -26,6 +26,20 @@ function [ imagemCortadaEm80por60RGB, temRostoNaImagem, BoundingBox ]...
 
         imagemPele = segmentacaoPorPele(imagemInicialEmRGB);
 
+        if (MOSTRAR_RESULTADOS_INTERMEDIARIOS)
+           
+            figure
+            
+            subplot(1,2,1)
+            imshow(imagemInicialDaCamera)
+            title('Imagem inicial')
+            
+            subplot(1,2,2)
+            imshow(imagemPele)
+            title('Pixels contendo pele')
+            
+        end
+        
         imagemDeteccaoDeBordas = edge(imagemPele, 'canny');
         imagemDeteccaoDeBordasDilatada = ...
             dilatacaoComQuadradoVariavel(imagemDeteccaoDeBordas, 3);
@@ -33,13 +47,13 @@ function [ imagemCortadaEm80por60RGB, temRostoNaImagem, BoundingBox ]...
         imagemPeleComDeteccaoDeBordas = imagemPele - imagemDeteccaoDeBordasDilatada;
         
         imagemBinariaPosTratamento = ...
-            sequenciaDeTratamentosDeImagem (imagemPeleComDeteccaoDeBordas, ...
+            sequenciaDeTratamentosDeImagem (imagemPele, ...
                                             MOSTRAR_RESULTADOS_INTERMEDIARIOS);
 
         if contemCandidatosARostoNaImagem(imagemBinariaPosTratamento)
             
             [imagemBinariaContendoApenasRosto, temRostoNaImagem] = ...
-                deixarApenasRostoNaImagem(imagemBinariaPosTratamento);
+                deixarApenasRostoNaImagem(imagemBinariaPosTratamento, MOSTRAR_RESULTADOS_INTERMEDIARIOS);
             
             if temRostoNaImagem
             
