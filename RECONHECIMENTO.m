@@ -47,7 +47,7 @@ function [  ] = RECONHECIMENTO(USAR_VIOLA_JONES, USAR_CONTROLE_PID, USAR_WEBCAM_
         textoLumNE = text(0, 0, '');
         textoLumNW = text(0, 0, '');
         
-        contagem = 0;
+        %contagem = 0;
         
         while sair == 0
 
@@ -103,16 +103,16 @@ function [  ] = RECONHECIMENTO(USAR_VIOLA_JONES, USAR_CONTROLE_PID, USAR_WEBCAM_
                 %movegui('northwest');
                 
                 
-                 contagem = contagem + 1
-                 
-                 if contagem == 50 || contagem == 100
-                     pause(5)
-                 end
-                 
-                 if contagem == 150
-                     sair = 1;
-                     delete(handleDaTela);
-                 end
+%                  contagem = contagem + 1
+%                  
+%                  if contagem == 50 || contagem == 100
+%                      pause(5)
+%                  end
+%                  
+%                  if contagem == 150
+%                      sair = 1;
+%                      delete(handleDaTela);
+%                  end
             end
         end
     
