@@ -13,8 +13,19 @@ function [imagemCortadaEm80por60RGB, temRostoNaImagem, BoundingBox] = ...
         AllBoundingBoxes = step(FDetect,imagemInicialDaCamera);
 
         if AllBoundingBoxes
-
+            
+            [tamanho, ~] = size(AllBoundingBoxes);
+            
             BoundingBox = AllBoundingBoxes(1,:);
+
+            for i = 1:tamanho
+                if AllBoundingBoxes(i,4) > BoundingBox(1,4)
+                
+                    BoundingBox = AllBoundingBoxes(i,:);
+                end
+            end
+            
+            
 
             BoundingBox(1) = BoundingBox(1)+20;
 
